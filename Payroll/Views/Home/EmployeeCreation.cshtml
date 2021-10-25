@@ -1,0 +1,793 @@
+﻿
+@{
+    ViewBag.Title = "EmployeeCreation";
+    Layout = "~/Views/Shared/_MasterLayout.cshtml";
+    string strType = Request.QueryString["type"] != null ? Request.QueryString["type"].ToString() : "";
+    string strEmpID = Request.QueryString["id"] != null ? Request.QueryString["id"].ToString() : "";
+}
+
+
+<div class="content container-fluid pb-0">
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Employee</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="/orange/app/main/dashboard">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active">Add Employee</li>
+                </ul>
+            </div>
+            <div class="col-auto float-right ml-auto" id="dvAddEmp" style="display:none;">
+                <div class="d-flex align-items-end flex-wrap my-auto right-content breadcrumb-right">
+                    <div class="btn-list" id="dvAddCompany">
+                        <a href="@Url.Action("EmployeeCreation", "Home")" class="btn btn-primary mr-3">Add New Employee</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="dvEmployeeCreation" class="container">
+    <div class="box-shadow clsEmpDetails" id="dvPersonaDetials">
+        <div class="box-head">
+            <i class="fa fa-user" aria-hidden="true"></i>Personal Details
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="col-form-label">Title<span class="text-danger">*</span></label>
+                    <select class="form-control clsMandatory" id="ddlTitle" name="Title">
+                        <option value="">-select-</option>
+                        <option value="Mr.">Mr</option>
+                        <option value="Mrs.">Mrs</option>
+                        <option value="Ms.">Ms</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="col-form-label">Name <span class="text-danger">*</span></label>
+                    <input class="form-control clsMandatory" type="text" id="txtName" name="Name">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="col-form-label">Gender<span class="text-danger">*</span></label>
+                    <select class="form-control clsMandatory" id="ddlGender" name="Gender">
+                        <option value="">-Select-</option>
+                        <option>Male</option>
+                        <option>Female</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="col-form-label">DOB<span class="text-danger">*</span></label>
+                    <input class="form-control clsMandatory" name="DOB" type="text" id="txtDOB">
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="col-form-label">Mail ID <span class="text-danger">*</span></label>
+                    <input class="form-control clsMandatory" name="Mail ID " type="text" id="txtMailID">
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="col-form-label">Mobile No <span class="text-danger">*</span></label>
+                    <input class="form-control clsMandatory" type="text" name="Mobile No" id="txtMobNO">
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="col-form-label">Personal Email ID<span class="text-danger">*</span></label>
+                    <input class="form-control clsMandatory" name="Personal Email ID" type="text" id="txtPersonalMailID">
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="col-form-label">Emergency Contact Name<span class="text-danger">*</span></label>
+                    <input class="form-control clsMandatory" type="text" id="txtContactName">
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="col-form-label">Emergency Phone No<span class="text-danger">*</span></label>
+                    <input class="form-control clsMandatory" type="text" id="txtEmergencyNo">
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="col-form-label">Type of Proof<span class="text-danger">*</span></label>
+                    <select class="form-control clsMandatory" id="ddlProof" name="Type of proof">
+                        <option value="">-select-</option>
+                        <option>Adhaar</option>
+                        <option>PAN</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="col-form-label">Proof No<span class="text-danger">*</span></label>
+                    <input class="form-control clsMandatory" name="Proof No" type="text" id="txtProofNo">
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="col-form-label">Nationality<span class="text-danger">*</span></label>
+                    <input class="form-control clsMandatory" name="Nationalitys" type="text" id="txtNationality">
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="col-form-label">Maritial Status<span class="text-danger">*</span></label>
+                    <select class="form-control clsMandatory" name="Maritial Status" id="ddlMaritialStatus">
+                        <option value="">-select-</option>
+                        <option value="M">Married</option>
+                        <option value="S">Single</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="col-form-label">Disability Status<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control clsMandatory" name="Disability Status" id="txtDisabilityStatus" />
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="col-form-label">Address<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control clsMandatory" name="Address" id="txtAddress" />
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="col-form-label">City<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control clsMandatory" name="city" id="txtCity" />
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="col-form-label">State<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control clsMandatory" name="State" id="txtState" />
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="col-form-label">Postal Code<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control clsMandatory" name="Postal Code" id="txtPostalCode" />
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="col-form-label">Country<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control clsMandatory" name="Postal Code" id="txtCountry" />
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="box-shadow clsEmpDetails" id="dvProfessioanlDetials">
+        <div class="box-head" data-toggle="collapse" data-target="#dvPerosnal">
+            <i class="fa fa-user-circle-o" aria-hidden="true"></i>Professional Details
+        </div>
+        <div class="row" id="dvPerosnal">
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="col-form-label">Join Date <span class="text-danger">*</span></label>
+                    <input class="form-control" type="text" id="txtJoinDate">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="col-form-label">Employee ID<span class="text-danger">*</span></label>
+                    <input class="form-control" type="text" id="txtEmployeeID">
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="col-form-label">Department<span class="text-danger">*</span></label>
+                    <select class="form-control" id="ddlDepartment"></select>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="col-form-label">Designation<span class="text-danger">*</span></label>
+                    <select class="form-control" id="ddlPosistion">
+                        <option>-select-</option>
+                        <option>Software Developer</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="col-form-label">Salary Type<span class="text-danger">*</span></label>
+                    <select class="form-control" id="ddlSalaryType">
+                        <option>-select-</option>
+                        <option value="D">Daily Wages</option>
+                        <option value="M">Monthly Salried</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="col-form-label">Salary/Wage Amount<span class="text-danger">*</span></label>
+                    <input class="form-control" type="text" id="txtSalaryWageAmout">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="col-form-label">Leave Approval<span class="text-danger">*</span></label>
+                    <input class="form-control" type="text" id="txtLeaveApproval">
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="box-shadow clsEmpDetails" id="dvContributionDetials">
+        <div class="box-head" data-toggle="collapse" data-target="#dvContribution">
+            <i class="fa fa-file" aria-hidden="true"></i>Contribution Details
+        </div>
+        <div class="row" id="dvContribution">
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="col-form-label">Employee Contribution<span class="text-danger">*</span></label>
+                    <input class="form-control" type="text" id="txtEmpContribution">
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="col-form-label">Employee Contribution ID<span class="text-danger">*</span></label>
+                    <input class="form-control" type="text" id="txtEmpContributionID">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="col-form-label">Employee EPF rate<span class="text-danger">*</span></label>
+                    <input class="form-control" type="text" id="txtEmpEPFRate">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="col-form-label">Employer EPF rate<span class="text-danger">*</span></label>
+                    <input class="form-control" type="text" id="txtEmployerEPFRate">
+                </div>
+            </div>
+
+
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="col-form-label">PCB Borne<span class="text-danger">*</span></label>
+                    <input class="form-control" type="text" id="txtPCbBorne">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="col-form-label">Socso Catagorey<span class="text-danger">*</span></label>
+                    <input class="form-control" type="text" id="txtSocsoCatagorey">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="col-form-label">Socso Number<span class="text-danger">*</span></label>
+                    <input class="form-control" type="text" id="txtSocsoNo">
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="table-responsive m-t-15" style="display:none;">
+        <table class="table table-striped custom-table">
+            <thead>
+                <tr>
+                    <th>Module Permission</th>
+                    <th class="text-center">Read</th>
+                    <th class="text-center">Write</th>
+                    <th class="text-center">Create</th>
+                    <th class="text-center">Delete</th>
+                    <th class="text-center">Import</th>
+                    <th class="text-center">Export</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Holidays</td>
+                    <td class="text-center">
+                        <input type="checkbox" checked="">
+                    </td>
+                    <td class="text-center">
+                        <input type="checkbox">
+                    </td>
+                    <td class="text-center">
+                        <input type="checkbox">
+                    </td>
+                    <td class="text-center">
+                        <input type="checkbox">
+                    </td>
+                    <td class="text-center">
+                        <input type="checkbox">
+                    </td>
+                    <td class="text-center">
+                        <input type="checkbox">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Leaves</td>
+                    <td class="text-center">
+                        <input type="checkbox" checked="">
+                    </td>
+                    <td class="text-center">
+                        <input type="checkbox" checked="">
+                    </td>
+                    <td class="text-center">
+                        <input type="checkbox" checked="">
+                    </td>
+                    <td class="text-center">
+                        <input type="checkbox">
+                    </td>
+                    <td class="text-center">
+                        <input type="checkbox">
+                    </td>
+                    <td class="text-center">
+                        <input type="checkbox">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Clients</td>
+                    <td class="text-center">
+                        <input type="checkbox" checked="">
+                    </td>
+                    <td class="text-center">
+                        <input type="checkbox" checked="">
+                    </td>
+                    <td class="text-center">
+                        <input type="checkbox" checked="">
+                    </td>
+                    <td class="text-center">
+                        <input type="checkbox">
+                    </td>
+                    <td class="text-center">
+                        <input type="checkbox">
+                    </td>
+                    <td class="text-center">
+                        <input type="checkbox">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Projects</td>
+                    <td class="text-center">
+                        <input type="checkbox" checked="">
+                    </td>
+                    <td class="text-center">
+                        <input type="checkbox">
+                    </td>
+                    <td class="text-center">
+                        <input type="checkbox">
+                    </td>
+                    <td class="text-center">
+                        <input type="checkbox">
+                    </td>
+                    <td class="text-center">
+                        <input type="checkbox">
+                    </td>
+                    <td class="text-center">
+                        <input type="checkbox">
+                    </td>
+                </tr>
+                <tr>
+                    ..
+                    <td>Tasks</td>
+                    <td class="text-center">
+                        <input type="checkbox" checked="">
+                    </td>
+                    <td class="text-center">
+                        <input type="checkbox" checked="">
+                    </td>
+                    <td class="text-center">
+                        <input type="checkbox" checked="">
+                    </td>
+                    <td class="text-center">
+                        <input type="checkbox" checked="">
+                    </td>
+                    <td class="text-center">
+                        <input type="checkbox">
+                    </td>
+                    <td class="text-center">
+                        <input type="checkbox">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Chats</td>
+                    <td class="text-center">
+                        <input type="checkbox" checked="">
+                    </td>
+                    <td class="text-center">
+                        <input type="checkbox" checked="">
+                    </td>
+                    <td class="text-center">
+                        <input type="checkbox" checked="">
+                    </td>
+                    <td class="text-center">
+                        <input type="checkbox" checked="">
+                    </td>
+                    <td class="text-center">
+                        <input type="checkbox">
+                    </td>
+                    <td class="text-center">
+                        <input type="checkbox">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Assets</td>
+                    <td class="text-center">
+                        <input type="checkbox" checked="">
+                    </td>
+                    <td class="text-center">
+                        <input type="checkbox" checked="">
+                    </td>
+                    <td class="text-center">
+                        <input type="checkbox" checked="">
+                    </td>
+                    <td class="text-center">
+                        <input type="checkbox" checked="">
+                    </td>
+                    <td class="text-center">
+                        <input type="checkbox">
+                    </td>
+                    <td class="text-center">
+                        <input type="checkbox">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Timing Sheets</td>
+                    <td class="text-center">
+                        <input type="checkbox" checked="">
+                    </td>
+                    <td class="text-center">
+                        <input type="checkbox" checked="">
+                    </td>
+                    <td class="text-center">
+                        <input type="checkbox" checked="">
+                    </td>
+                    <td class="text-center">
+                        <input type="checkbox" checked="">
+                    </td>
+                    <td class="text-center">
+                        <input type="checkbox">
+                    </td>
+                    <td class="text-center">
+                        <input type="checkbox">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="submit-section clsSubmit" id="btnInsert">
+        <button class="btn btn-primary submit-btn" onclick="ManageEmployee()">Submit</button>
+        <button class="btn btn-primary submit-btn" style="background: #34444c;border: 1px solid #34444c;" onclick="clearRegisterForm()">Clear</button>
+    </div>
+    <div class="submit-section clsSubmit" style="display:none;" id="dvUpdate">
+        <button class="btn btn-primary submit-btn" id="btnUpdate" onclick="ManageEmployee('U')" data-type="U">Update</button>
+        <button class="btn btn-primary submit-btn" id="btnClose" style="background: #34444c;border: 1px solid #34444c;" onclick="backtoEmployeeList();">Back</button>
+    </div>
+</div>
+
+
+<input type="hidden" id="hdnType" value="F" />
+<script>
+    var DesignationAry;
+    var DepartmentAry;
+
+    $(document).ready(function () {
+        debugger
+        $("#txtJoinDate,#txtDOB").datepicker({
+            dateFormat: "dd/mm/yy",
+            minDate: '-50y',
+            maxDate: '10y',
+            changeMonth: true,
+            changeYear: true,
+        });
+
+        LoadDepartment();
+        LoadDesingnation();
+        if ('@strEmpID' != "" || '@strType' != "") {
+            $(".clsSubmit").hide();
+            $("#dvUpdate").show();
+            $("#dvAddEmp").show();
+            $(".submit-btn").hide();
+            $(".submit-btn").hide();
+            if ('@strType' == 'E') {
+                $("#btnUpdate,#btnClose").show();
+            }
+            else {
+                $("#btnClose").show();
+            }
+            EmpPreload('@strEmpID', '@strType');
+
+        }
+
+    });
+
+    function EmpPreload(EmpID, Type) {
+
+        $.blockUI({
+            message: LoderDiv,
+            css: { padding: '5px' }
+        });
+        var param = {
+            strEmpID: EmpID,
+            strFlag: "F"
+        }
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("ManageEmployeeDetails", "Home")",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(param),
+            dataType: "json",
+            success: function (data) {
+                $.unblockUI();
+                if (data.Status == "00") {
+                    var EmployeeDetails = JSON.parse(data.Result);
+                    EmployeeDetails = EmployeeDetails.Temp;
+                    $("#ddlTitle").val(EmployeeDetails[0].Emp_Tittle)
+                    $("#txtName").val(EmployeeDetails[0].Emp_Name)
+                    $("#ddlGender").val(EmployeeDetails[0].Emp_Gender)
+                    $("#txtDOB").val(EmployeeDetails[0].Emp_DOB)
+                    $("#txtMailID").val(EmployeeDetails[0].Emp_Email_Id)
+                    $("#txtMobNO").val(EmployeeDetails[0].Emp_Mobile_No)
+                    $("#txtPersonalMailID").val(EmployeeDetails[0].Emp_Email_Id)
+                    $("#txtContactName").val(EmployeeDetails[0].Emp_Emer_Contact_Person)
+                    $("#txtEmergencyNo").val(EmployeeDetails[0].Emp_Emer_Contact_Ph_No)
+                    $("#ddlProof").val(EmployeeDetails[0].Emp_Id_Proof)
+                    $("#txtProofNo").val(EmployeeDetails[0].Emp_Id_Proof_No)
+                    $("#txtNationality").val(EmployeeDetails[0].Emp_Nationality)
+                    $("#ddlMaritialStatus").val(EmployeeDetails[0].Emp_Marital_Status)
+                    $("#txtDisabilityStatus").val(EmployeeDetails[0].Emp_Disability_Status)
+                    $("#txtAddress").val(EmployeeDetails[0].Emp_Per_Address)
+                    $("#txtCity").val(EmployeeDetails[0].Emp_City)
+                    $("#txtState").val(EmployeeDetails[0].Emp_State)
+                    $("#txtPostalCode").val(EmployeeDetails[0].Emp_Postal_Code)
+                    $("#txtCountry").val(EmployeeDetails[0].Emp_Country)
+                    $("#txtJoinDate").val(EmployeeDetails[0].Emp_Join_Date)
+                    $("#txtEmployeeID").val(EmployeeDetails[0].Emp_Id)
+                    $("#txtSalaryWageAmout").val(EmployeeDetails[0].Emp_Basic_Sal)
+                    $("#txtEmpEPFRate").val(EmployeeDetails[0].Emp_EMP_PF)
+                    $("#txtEmployerEPFRate").val(EmployeeDetails[0].Emp_EMP_PF_Per)
+                    $("#txtPCbBorne").val(EmployeeDetails[0].Emp_PCB_No)
+                    $("#txtSocsoNo").val(EmployeeDetails[0].Emp_ER_SOCSO)
+                    $("#ddlDepartment").val(EmployeeDetails[0].Emp_ER_SOCSO)
+                    var slctedDes = $.grep(DesignationAry, function (i, val) {
+                        return val.DES_DESIGNATION_ID == EmployeeDetails[0].Emp_Position;
+                    });
+                    var slctedDep = $.grep(DepartmentAry, function (i, val) {
+                        return val.DEP_DEPARTMENT_ID == slctedDes[0].DES_DEPARTMENT_ID;
+                    });
+                    $("#ddlDepartment").val(slctedDep[0].DEP_DEPARTMENT_ID)
+                    $("#ddlPosistion").val(EmployeeDetails[0].Emp_Position)
+
+                    if (Type == "V") {
+                        $(".form-control").attr("disabled", "disabled");
+                    }
+                    else {
+                        $(".form-control").removeAttr("disabled");
+                    }
+
+                }
+                else {
+                    alert(data.Message);
+                }
+            },
+            error: function (ex) {
+                $.unblockUI();
+                showerralert("Unable to connect remote server", "", '');
+            }
+        });
+    }
+
+    function ManageEmployee(type) {
+
+        $(".errmsg").remove();
+        $(".clsMandatory").removeClass("Errclr");
+        var ErrFlag = false;
+        $(".clsMandatory").each(function () {
+            if ($(this).val() == "") {
+                ErrFlag = true;
+                $(this).addClass("Errclr");
+                $(this).after("<span class='errmsg' style='color:red;'>Please enter " + $(this).attr("name") + "</span>")
+            }
+        });
+        if (ErrFlag) {
+            return false;
+        }
+
+        var param = {
+            strEmpTittle: $("#ddlTitle").val(),
+            strEmpName: $("#txtName").val(),
+            strEmpGender: $("#ddlGender").val(),
+            strEmpDOB: $("#txtDOB").val(),
+            strEmpEmailId: $("#txtMailID").val(),
+            strEmpPosition: $("#ddlPosistion").val(),
+            EmpMobileNo: $("#txtMobNO").val(),
+            strEmpPerasonalEmailId: $("#txtPersonalMailID").val(),
+            strEmpEmerContactPerson: $("#txtContactName").val(),
+            strEmpEmerContactPhNo: $("#txtEmergencyNo").val(),
+            strEmpIdProof: $("#ddlProof").val(),
+            strEmpIdProofNo: $("#txtProofNo").val(),
+            strEmpNationality: $("#txtNationality").val(),
+            strEmpMaritalStatus: $("#ddlMaritialStatus").val(),
+            strEmpDisabilityStatus: $("#txtDisabilityStatus").val(),
+            strEmpPerAddress: $("#txtAddress").val(),
+            strEmpCity: $("#txtCity").val(),
+            strEmpSTATE: $("#txtState").val(),
+            strEmpPostalCode: $("#txtPostalCode").val(),
+            strEmpCOUNTRY: $("#txtCountry").val(),
+            strEmpJoinDate: $("#txtJoinDate").val(),
+            strEmpID: $("#txtEmployeeID").val(),
+            //$("#ddlSalaryType").val()
+            intEmp_Basic_Sal: $("#txtSalaryWageAmout").val(),
+            //$("#txtLeaveApproval").val()
+            //$("#txtEmpContribution").val()
+            //$("#txtEmpContributionID").val()
+            intEmpEMPPFPer: $("#txtEmpEPFRate").val(),
+            intEmpERPF: $("#txtEmployerEPFRate").val(),
+            intEmpPCBNo: $("#txtPCbBorne").val(),
+            //$("#txtSocsoCatagorey").val()
+            intEmpSOCSOPer: $("#txtSocsoNo").val(),
+            strEmpUsername: $("#txtName").val(),
+            strUsername: $("#txtMailID").val(),
+            strFlag: type != undefined && type != null && type != "" ? type : "I"
+        }
+        $.blockUI({
+            message: LoderDiv,
+            css: { padding: '5px' }
+        });
+
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("ManageEmployeeDetails", "Home")",
+            data: JSON.stringify(param),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                $.unblockUI();
+                if (data.Status == "00") {
+                    if (type == "U") {
+                        window.location.href = '@Url.Action("EmployeeList", "Home")';
+                        return false;
+                    }
+                    alert(data.Result);
+                }
+                else {
+                    alert(data.Message);
+                }
+            },
+            error: function (ex) {
+                $.unblockUI();
+                alert("Unable to connect remote server", "", '');
+            }
+        });
+    }
+
+    function LoadDepartment() {
+
+        var param = {
+            strDepartment: "",
+            strDepartmentID: "",
+            strDesignationID: "",
+            strFlag: "F"
+        }
+
+        $.blockUI({
+            message: LoderDiv,
+            css: { padding: '5px' }
+        });
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("ManageDepartment", "Home")",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: JSON.stringify(param),
+            success: function (data) {
+                $.unblockUI();
+                if (data.Status == "00") {
+                    var DepartmentBuilder = "<option value=''>-select-</option>";
+                    var DepartmentDetails = JSON.parse(data.Result);
+                    DepartmentDetails = DepartmentDetails.Temp;
+                    $.each(DepartmentDetails, function (ind, val) {
+                        DepartmentBuilder += '<option value="' + val.DEP_DEPARTMENT_ID + '">' + val.DEP_DEPARTMENT_NAME + '</option>'
+                    });
+                    $("#ddlDepartment").html(DepartmentBuilder);
+                }
+                else {
+                    alert(data.Result);
+                }
+
+            },
+            error: function (ex) {
+                $.unblockUI();
+                showerralert("Unable to connect remote server", "", '');
+            }
+        });
+    }
+
+    function LoadDesingnation() {
+
+
+        var param = {
+            strDesignation: "",
+            strDesignationID: "",
+            strDepartmentID: "",
+            strFlag: "F"
+        }
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("ManageDesignation", "Home")",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: JSON.stringify(param),
+            success: function (data) {
+                $.unblockUI();
+                if (data.Status == "00") {
+                    DesignationAry = JSON.parse(data.Result);
+                    DesignationAry = DesignationAry.Temp;
+                }
+                else {
+                    $("#btnClose").click();
+                    alert(data.Message);
+                }
+            },
+            error: function (ex) {
+                $.unblockUI();
+                showerralert("Unable to connect remote server", "", '');
+            }
+        });
+    }
+
+    $("#ddlDepartment").change(function () {
+        var desid = $(this).val();
+        var DesBuilder = "";
+        $.each(DesignationAry, function (ind, val) {
+            if (val.DES_DEPARTMENT_ID == desid)
+                DesBuilder += '<option value="' + val.DES_DESIGNATION_ID + '">' + val.DES_DESIGNATION_NAME + '</option>'
+        });
+        $("#ddlPosistion").html(DesBuilder);
+    });
+
+    function backtoEmployeeList() {
+        window.location.href = '@Url.Action("EmployeeList", "Home")';
+    }
+
+    function clearRegisterForm() {
+        $(".form-control").val("");
+    }
+</script>

@@ -1,0 +1,269 @@
+﻿
+@{
+    ViewBag.Title = "Designation";
+    Layout = "~/Views/Shared/_MasterLayout.cshtml";
+}
+
+<link href="~/Content/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+<script src="~/Content/js/jquery.dataTables.min.js"></script>
+<script src="~/Content/js/dataTables.bootstrap4.js"></script>
+
+<!--Page header-->
+
+<div class="content container-fluid p-b">
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h4 class="page-title">Designation</h4>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="/orange/app/main/dashboard">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active">Designation</li>
+                </ul>
+            </div>
+            <div class="col-auto float-right ml-auto">
+                <div class="d-flex align-items-end flex-wrap my-auto right-content breadcrumb-right">
+                    <div class="btn-list" id="dvAddCompany">
+
+                        <a href="#" class="btn btn-primary mr-3" data-toggle="modal" onclick="triggerNewPopup()">Add Designation</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--End Page header-->
+<!-- Row -->
+<div class="row">
+    <div class="col-xl-12 col-md-12 col-lg-12">
+        <div class="card">
+            <div class="card-header  border-0">
+                <h4 class="card-title">Designation Summary</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive" id="dvDesignationDetails">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Row-->
+<!--Add Department Modal -->
+<div class="modal fade" id="addDesignationmodal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Add Designation</h5>
+                <button class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-label">Department </label>
+                            <select id="ddlDepartment" class="form-control">
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Designation Name</label>
+                            <input type="text" class="form-control" placeholder="Designation" id="txtDesignation" value="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-outline-primary" data-dismiss="modal" id="btnClose">Close</a>
+                <a href="#" class="btn btn-primary" data-id="" id="btnSumit" onclick="ManageDesignation()">Submit</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Add Department Modal  -->
+<!--Edit Department Modal -->
+<div class="modal fade" id="DeleteModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Are you sure want to delete ?</label>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-outline-primary" data-dismiss="modal" id="btnDltClose">Close</a>
+                <a href="#" class="btn btn-primary" id="btnDelete" data-flag="D" onclick="ManageDesignation()">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Edit Department Modal  -->
+<input type="hidden" id="hdnFlag" value="F"/>
+<input type="hidden" id="hdnDepID" />
+<input type="hidden" id="hdnDesID" />
+<script>
+    var DepartmentAry = [];
+    $(document).ready(function () {
+        LoadDepartment();
+        ManageDesignation();
+    });
+
+    $("#txtDepartment").keypress(function () {
+        $(".clserr").remove();
+    });
+
+    function ManageDesignation() {
+        var flag = $("#hdnFlag").val();
+        if (flag == "I" || flag == "U") {
+            $(".clserr").remove();
+            if ($("#txtDesignation").val() == "") {
+                $("#txtDesignation").after("<span class='clserr' style='color:red;'>Please enter department</span>");
+                $("#txtDesignation").focus();
+                return false;
+            }
+        }
+
+        var param = {
+            strDesignation: $("#txtDesignation").val(),
+            strDesignationID: $("#hdnDesID").val(),
+            strDepartmentID: $("#ddlDepartment").val(),
+            strFlag: flag
+        }
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("ManageDesignation", "Home")",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: JSON.stringify(param),
+            success: function (data) {
+                $.unblockUI();
+                if (data.Status == "00") {
+                    if (flag == "F") {
+                        var DepartmentDetails = JSON.parse(data.Result);
+                        DepartmentDetails = DepartmentDetails.Temp;
+                        BuildCompany(DepartmentDetails);
+                    }
+                    else {
+                        $("#btnDltClose").click();
+                        $("#btnClose").click();
+                        alert(data.Result);
+                        $("#hdnFlag").val("F");
+                        ManageDesignation();
+                    }
+                }
+                else {
+                    $("#btnClose").click();
+                    alert(data.Message);
+                }
+            },
+            error: function (ex) {
+                $.unblockUI();
+                showerralert("Unable to connect remote server", "", '');
+            }
+        });
+    }
+    function LoadDepartment() {
+
+        var param = {
+            strDepartment: "",
+            strDepartmentID: "",
+            strDesignationID: "",
+            strFlag: "F"
+        }
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("ManageDepartment", "Home")",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: JSON.stringify(param),
+            success: function (data) {
+                if (data.Status == "00") {
+                        var DepartmentDetails = JSON.parse(data.Result);
+                        DepartmentDetails = DepartmentDetails.Temp;
+                        DepartmentAry = DepartmentDetails;
+                        var OptionBuilder = "<option value=''>-select-</option>";
+                        $.each(DepartmentDetails, function (ind, val) {
+                            OptionBuilder += '<option value="' + val.DEP_DEPARTMENT_ID + '">' + val.DEP_DEPARTMENT_NAME + '</option>'
+                        });
+                        $("#ddlDepartment").html(OptionBuilder);
+                }
+                else {
+                    alert(data.Message);
+                }
+            },
+            error: function (ex) {
+                $.unblockUI();
+                showerralert("Unable to connect remote server", "", '');
+            }
+        });
+    }
+
+    function BuildCompany(DepAry) {
+
+        var DepartmentBuilder = "";
+        DepartmentBuilder += '<table class="table  table-vcenter text-nowrap table-bordered border-bottom" id="Departmenttable">'
+        DepartmentBuilder += '<thead>'
+        DepartmentBuilder += '<tr>'
+        DepartmentBuilder += '<th class="border-bottom-0 w-5">#ID</th>'
+        DepartmentBuilder += '<th class="border-bottom-0">Designation Name</th>'
+        DepartmentBuilder += '<th class="border-bottom-0">Department Name</th>'
+        DepartmentBuilder += '<th class="border-bottom-0">Actions</th>'
+        DepartmentBuilder += '</tr>'
+        DepartmentBuilder += '</thead>'
+        DepartmentBuilder += '<tbody>'
+
+        $.each(DepAry, function (ind, val) {
+            var DepName = $.grep(DepartmentAry, function (value, i) {
+                return val.DES_DEPARTMENT_ID == value.DEP_DEPARTMENT_ID
+            });
+            var DepartmentName = DepName.length ? DepName[0].DEP_DEPARTMENT_NAME : "";
+            DepartmentBuilder += '<tr>'
+            DepartmentBuilder += '<td>' + val.DES_DESIGNATION_ID + '</td>'
+            DepartmentBuilder += '<td>' + val.DES_DESIGNATION_NAME + '</td>'
+            DepartmentBuilder += '<td>' + DepartmentName + '</td>'
+            DepartmentBuilder += '<td>'
+            DepartmentBuilder += '<a class="btn btn-primary btn-icon btn-sm" data-toggle="modal"  onclick="triggerEditPopup(this)" data-depid="' + val.DES_DEPARTMENT_ID + '" data-id="' + val.DES_DESIGNATION_ID + '" data-Name="' + val.DES_DESIGNATION_NAME + '" style="background-color: #6363f9;border: 1px solid #6363f9;">'
+            DepartmentBuilder += '<i class="fa fa-edit data-toggle="tooltip" data-original-title="Edit"></i>'
+            DepartmentBuilder += '</a>'
+            DepartmentBuilder += '<a class="btn btn-danger btn-icon btn-sm" data-toggle="tooltip" onclick="triggerDeletePopup(this)" style="margin-left: 5%;" data-id="' + val.DES_DESIGNATION_ID + '" data-Name="' + val.DES_DESIGNATION_NAME + '" data-original-title="Delete"><i class="feather feather-trash-2 fa fa-trash-o"></i></a>'
+            DepartmentBuilder += '</td>'
+            DepartmentBuilder += '</tr>'
+        });
+
+        DepartmentBuilder += '</tbody>'
+        DepartmentBuilder += '</table>'
+
+        $("#dvDesignationDetails").html(DepartmentBuilder);
+        $('#Departmenttable').dataTable();
+    }
+
+    function triggerEditPopup(e) {
+        $("#hdnDesID").val($(e).data("id"))
+        $("#hdnDepID").val($(e).data("depid"));
+        $("#hdnFlag").val("U");
+        $("#txtDesignation").val($(e).data("name"));
+        $("#ddlDepartment").val($(e).data("depid"));
+        $("#btnSumit").html("Update");
+        $("#modalTitle").html("Modify Designation");
+        $('#addDesignationmodal').modal('show');
+    }
+
+    function triggerDeletePopup(e) {
+        $("#hdnFlag").val("D");
+        $("#hdnDesID").val($(e).data("id"))
+        $('#DeleteModal').modal('show');
+    }
+    function triggerNewPopup() {
+        $("#ddlDepartment").val("");
+        $("#txtDesignation").val("");
+        $("#hdnDesID").val("")
+        $("#hdnDepID").val("");
+        $("#hdnFlag").val("I");
+        $("#btnSumit").html("Submit");
+        $("#modalTitle").html("Add Designation");
+        $('#addDesignationmodal').modal('show');
+    }
+</script>

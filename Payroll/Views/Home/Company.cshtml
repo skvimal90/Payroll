@@ -1,0 +1,805 @@
+﻿
+@{
+    ViewBag.Title = "Company";
+    Layout = "~/Views/Shared/_MasterLayout.cshtml";
+}
+<style>
+    .ant-table {
+        font-size: .9375rem !important;
+        color: rgb(51, 51, 51) !important;
+    }
+
+    .ant-table-body {
+        overflow-x: auto !important;
+    }
+
+    .ant-table-thead > tr > th {
+        background-color: rgba(255, 255, 255, 0.85) !important;
+        border-bottom: 2px solid #dee2e6 !important;
+    }
+
+    .ant-table.ant-table-bordered > .ant-table-container > .ant-table-content > table > thead > tr > th, .ant-table.ant-table-bordered > .ant-table-container > .ant-table-header > table > thead > tr > th, .ant-table.ant-table-bordered > .ant-table-container > .ant-table-body > table > thead > tr > th, .ant-table.ant-table-bordered > .ant-table-container > .ant-table-content > table > tbody > tr > td, .ant-table.ant-table-bordered > .ant-table-container > .ant-table-header > table > tbody > tr > td, .ant-table.ant-table-bordered > .ant-table-container > .ant-table-body > table > tbody > tr > td, .ant-table.ant-table-bordered > .ant-table-container > .ant-table-content > table > tfoot > tr > th, .ant-table.ant-table-bordered > .ant-table-container > .ant-table-header > table > tfoot > tr > th, .ant-table.ant-table-bordered > .ant-table-container > .ant-table-body > table > tfoot > tr > th, .ant-table.ant-table-bordered > .ant-table-container > .ant-table-content > table > tfoot > tr > td, .ant-table.ant-table-bordered > .ant-table-container > .ant-table-header > table > tfoot > tr > td, .ant-table.ant-table-bordered > .ant-table-container > .ant-table-body > table > tfoot > tr > td {
+        border-right: 0px solid #f0f0f0 !important;
+        border-top: 1px solid #dee2e6 !important;
+    }
+    /* .ant-pagination-options-size-changer.ant-select {
+        display: none !important;
+    } */
+    td.ant-table-column-sort {
+        background: rgba(0, 0,0, 0) !important;
+    }
+
+    .ant-table.ant-table td h2.table-avatar {
+        align-items: center;
+        display: inline-flex;
+        font-size: inherit;
+        font-weight: 400;
+        margin: 0;
+        padding: 0;
+        vertical-align: middle;
+        white-space: nowrap;
+    }
+
+    .ant-table.ant-table td h2 {
+        display: inline-block;
+        font-size: inherit;
+        font-weight: 400;
+        margin: 0;
+        padding: 0;
+        vertical-align: middle;
+    }
+
+        .ant-table.ant-table td h2 a {
+            color: #333;
+        }
+
+        .ant-table.ant-table td h2 span {
+            color: #888;
+            display: block;
+            font-size: 12px;
+            margin-top: 3px;
+        }
+
+    .ant-table-thead > tr, .ant-table-tbody > tr > td, .ant-table tfoot > tr > th, .ant-table tfoot > tr > td {
+        padding: 10px 8px !important;
+    }
+
+    .ant-table.ant-table tr {
+        box-shadow: 0 0 3px #e5e5e5;
+    }
+
+    .ant-pagination {
+        margin-top: 20px !important;
+        text-align: end;
+    }
+
+    .ant-pagination-prev {
+        border: 1px solid #dee2e6;
+        padding: 1px 10px;
+        background-color: #fff;
+        border-top-left-radius: .25rem;
+        border-bottom-left-radius: .25rem;
+    }
+
+    .ant-pagination-next {
+        border: 1px solid #dee2e6;
+        padding: 1px 10px;
+        background-color: #fff;
+        border-top-right-radius: .25rem;
+        border-bottom-right-radius: .25rem;
+    }
+
+
+    .ant-pagination-prev, .ant-pagination-next, .ant-pagination-jump-prev, .ant-pagination-jump-next {
+        color: rgb(108, 117, 125) !important;
+        font-family: 'CircularStd', sans-serif !important;
+        font-size: 15px !important;
+        height: 36px !important;
+    }
+
+    .ant-pagination-prev, .ant-pagination-jump-prev, .ant-pagination-jump-next {
+        margin-right: 0px !important;
+    }
+
+    .ant-pagination-item {
+        margin-right: 0px !important;
+        padding: 1px 0px !important;
+        height: 36px !important;
+    }
+
+    .ant-pagination-total-text {
+        float: left;
+        color: rgb(51, 51, 51) !important;
+        font-family: 'CircularStd', sans-serif !important;
+        font-size: 15px !important;
+    }
+
+    .ant-pagination-item-active {
+        font-weight: 500;
+        background: rgb(0, 197, 251) !important;
+        border-color: rgb(0, 197, 251) !important;
+        color: rgb(255, 255, 255) !important;
+        z-index: 1 !important;
+    }
+
+    .ant-table-pagination-right {
+        float: none !important;
+    }
+
+    .box-shadow {
+        border: none !important;
+        border-radius: 2px !important;
+        background: #fff !important;
+        box-shadow: 0 2px 4px 0 #c8c8c8;
+        margin-bottom: 20px !important;
+    padding: 1%;
+        }
+
+    .box-head {
+        padding: 1%;
+        border-bottom: 0.5px solid #ff9b44;
+        margin-bottom: 1%;
+    }
+
+    .container-fluid {
+        padding-bottom: 0 !important;
+    }
+
+    .submit-section {
+        margin-bottom: 3% !important;
+    }
+
+    .Errclr {
+        border-color: #ff0000 !important;
+    }
+
+    .clsIcon {
+        font-size: 21px;
+        font-weight: bold;
+    }
+</style>
+
+<div class="content container-fluid">
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h4 class="page-title">Companies</h4>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="/orange/app/main/dashboard">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active">Companies</li>
+                </ul>
+            </div>
+            <div class="col-auto float-right ml-auto">
+                <div class="d-flex align-items-end flex-wrap my-auto right-content breadcrumb-right">
+                    <div class="btn-list" id="dvAddCompany">
+                        <a href="#" class="btn btn-primary" id="btnAddNewEmployee" data-toggle="modal"><i class="feather feather-plus fs-15 my-auto mr-2"></i>Add New Company</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Page header-->
+<!--End Page header-->
+<!-- Row-->
+<!--Row-->
+<div class="row">
+    <div class="col-md-12 clsCompany" id="dvDashBoard">
+        <div class="card">
+            <div class="card-body">
+                <div class="row" style="display:none">
+                    <div class="col-xl-3">
+                        <div class="form-group">
+                            <label class="form-label">Package</label>
+                            <select class="form-control custom-select select2" data-placeholder="Select Package">
+                                <option label="Select Package"></option>
+                                <option value="1">Free</option>
+                                <option value="2">Basic</option>
+                                <option value="3">Premium</option>
+                                <option value="4">Advanced</option>
+                                <option value="5">Enterprise</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xl-3">
+                        <div class="form-group">
+                            <label class="form-label">Package Type:</label>
+                            <select class="form-control custom-select select2" data-placeholder="Select Package">
+                                <option label="Select Package"></option>
+                                <option value="1">Monthly</option>
+                                <option value="2">Yearly</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xl-2">
+                        <div class="form-group mt-xl-5">
+                            <a href="#" class="btn btn-primary btn-block">Search</a>
+                        </div>
+                    </div>
+                    <div class="col-xl-2">
+                        <div class="form-group mt-xl-5">
+                            <a href="#" class="btn btn-danger btn-block">Reset</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive company-table" id="dvCompanyDetails">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12 clsCompany" id="dvNewCompany" style="display:none;">
+        <div class="container">
+            <div class="box-shadow">
+                <div class="box-head">
+                    <h4>
+                        Company Details
+                    </h4>
+                </div>
+                <div class="row container">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Company Name</label>
+                            <input class="form-control clserror" onkeypress="ValidateAlpha(event);" name="Company Name" id="txtCompanyName" placeholder="Company Name" value="">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Company Type</label>
+                            <select class="form-control clserror" id="txtCompanyType" name="Company Type">
+                                <option value="">--Select--</option>
+                                <option value="Sole Proprietorship/ Sole Trader">Sole Proprietorship/ Sole Trader.</option>
+                                <option value="Ordinary Business Partnership">Ordinary Business Partnership</option>
+                                <option value="Limited Partnership (LP)">Limited Partnership (LP)</option>
+                                <option value="Limited Liability Partnership (LLP)">Limited Liability Partnership (LLP)</option>
+                                <option value="Private Company Limited By Shares.">Private Company Limited By Shares.</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Company Email</label>
+                            <input class="form-control clserror" name="Company Email" id="txtCompanyEmail" placeholder="Company Email" value="">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Company Phone No</label>
+                            <input class="form-control clserror" onkeypress="isNumericVal(event);" name="Company Phone No" id="txtCompanyPhnNo" placeholder="Phone No" value="">
+                        </div>
+                    </div>
+                    <div class="col-md-6" style="display:none;">
+                        <div class="form-group">
+                            <label class="form-label">Company Launch Date</label>
+                            <input class="form-control" id="txtLaunchDate" name="Company Launch Date" placeholder="Company Launch Date" value="">
+                        </div>
+                    </div>
+                    <div class="col-md-6" style="display:none;">
+                        <div class="form-group">
+                            <label class="form-label">Company Contact Person</label>
+                            <input class="form-control" id="txtContactPerson" onkeypress="ValidateAlpha(event);" name="Company Contact Person" placeholder="Company Contact Person" value="">
+                        </div>
+                    </div>
+                    <div class="col-md-6" style="display:none;">
+                        <div class="form-group">
+                            <label class="form-label">Company Contact Person Email</label>
+                            <input class="form-control" id="txtContactPerMail" name="Company Contact Person Email" placeholder="Company Contact Person Email" value="">
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Street</label>
+                            <input class="form-control clserror" onkeypress="ValidateAlpha(event);" name="Street" type="text" id="txtStreet" placeholder="Street" value="">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">City </label>
+                            <input class="form-control clserror" onkeypress="ValidateAlpha(event);" name="City" type="text" id="txtCity" placeholder="City" value="">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">State</label>
+                            <input class="form-control clserror" onkeypress="ValidateAlpha(event);" name="State" type="text" id="txtState" placeholder="State" value="">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Country</label>
+                            <input class="form-control clserror" onkeypress="ValidateAlpha(event);" name="Country" type="text" id="txtCountry" placeholder="Country" value="">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Postal Code</label>
+                            <input class="form-control clserror" name="Postal Code" type="text" id="txtPostalCode" onkeypress="isNumericVal(event);" placeholder="Postal Code" value="">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Upload Company Logo</label>
+                            <div class="input-group file-browser" id="dvFile">
+                                <input type="text" class="form-control border-right-0 browse-file" id="txtFile" placeholder="choose" readonly>
+                                <label class="input-group-append mb-0">
+                                    <span class="btn ripple btn-primary">
+                                        Browse <input type="file" class="file-browserinput" id="ClientLogo" data-path="" style="display: none;">
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 m-t-5" style="margin-top: 4% !important;">
+                        <div class="custom-controls-stacked d-md-flex">
+                            <label class="custom-control custom-radio success mr-4">
+                                <input type="radio" class="custom-control-input" id="rdnActive" name="example-radios1" value="option1" checked>
+                                <span class="custom-control-label">Active</span>
+                            </label>
+                            <label class="custom-control custom-radio success mr-4">
+                                <input type="radio" class="custom-control-input" id="rdnInActive" name="example-radios1" value="option2">
+                                <span class="custom-control-label">InActive</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-6 clsHide">
+                        <div class="form-group">
+                            <label class="form-label">User Name</label>
+                            <input class="form-control clserror" onkeypress="ValidateAlpha(event);" name="User Name" id="txtUserName" placeholder="User Name" value="">
+                        </div>
+                    </div>
+                    <div class="col-md-6 clsHide">
+                        <div class="form-group">
+                            <label class="form-label">Password</label>
+                            <input class="form-control clserror" name="Password" id="txtPassword" type="password" placeholder="Password" value="">
+                        </div>
+                    </div>
+                    <div class="col-md-6 clsHide">
+                        <div class="form-group">
+                            <label class="form-label">Confirm Password</label>
+                            <input class="form-control clserror" name="Confirm Password" id="txtCnfrmPassword" type="password" placeholder="Confirm Password" value="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="container">
+            <div class="box-shadow">
+                <div class="box-head" data-toggle="collapse" data-target="#dvOptional">
+                    <h4>
+                        Company Registration (Optional)
+                    </h4>
+                </div>
+                <div class="row container collapse" id="dvOptional">
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">E No</label>
+                            <input class="form-control" onkeypress="validateAlphandNumeric();" name="E No" id="txtEno" type="text" placeholder="E No" value="">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">C No </label>
+                            <input class="form-control" onkeypress="validateAlphandNumeric();" name="C No" id="txtCno" type="text" placeholder="C No" value="">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">EPF</label>
+                            <input class="form-control" onkeypress="validateAlphandNumeric();" name="EPF" id="txtEPF" type="text" placeholder="EPF" value="">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Socgo</label>
+                            <input class="form-control" onkeypress="validateAlphandNumeric();" name="Socgo" id="txtSocgo" type="text" placeholder="Socgo" value="">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Zakat No</label>
+                            <input class="form-control" onkeypress="validateAlphandNumeric();" name="Socgo" id="txtZakat" type="text" placeholder="Zakat" value="">
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        <div class="submit-section">
+            <button class="btn btn-primary submit-btn" id="btnSubmit" onclick="ManageCompany('I')">Submit</button>
+            <button class="btn btn-primary submit-btn" id="btnUpdate" onclick="ManageCompany('U')" style="display:none;">Update</button>
+            <button class="btn btn-primary submit-btn" id="btnClose" style="background: #34444c;border: 1px solid #34444c;">Close</button>
+        </div>
+    </div>
+</div>
+
+<!--Delete Department Modal -->
+<div class="modal fade" id="DeleteModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Are you sure want to delete ?</label>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-outline-primary" data-dismiss="modal" id="btnDltClose">Close</a>
+                <a href="#" class="btn btn-primary" id="btnDelete" data-flag="D" onclick="ManageCompany('D')">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Delete Edit Department Modal  -->
+
+<input type="hidden" id="hdnLogoPath" value="" />
+<input type="hidden" id="hdnCompanyID" value="" />
+<!-- End Row-->
+
+<script>
+    var CompanyDetailsAry = [];
+    $(document).ready(function () {
+        //$("#txtLaunchDate").datepicker({
+        //    dateFormat: "dd/mm/yy",
+        //    minDate: '-90y',
+        //    maxDate: '-10y',
+        //    changeMonth: true,
+        //    changeYear: true,
+        //});
+        FetchCompanyDetails();
+    });
+    $("#btnAddNewEmployee").click(function () {
+        $(".form-control").val("");
+        $(".form-control").removeAttr("disabled");
+        $(".clsHide").show();
+        $(".clsCompany").hide();
+        $("#btnSubmit,#dvNewCompany").show();
+        $("#btnUpdate,#dvAddCompany").hide();
+    });
+
+    $("#btnClose").click(function () {
+        $(".form-control").val("");
+        $(".clsCompany").hide();
+        $("#dvDashBoard,#dvAddCompany").show();
+        FetchCompanyDetails()
+    })
+
+    $(".clserror").keypress(function () {
+        $(this).parent().find(".errmsg").remove();
+        $(this).removeClass("Errclr");
+    });
+    $("#txtCompanyType").change(function () {
+        $(this).parent().find(".errmsg").remove();
+        $(this).removeClass("Errclr");
+    });
+
+
+    function ManageCompany(flag) {
+
+        //Validation Start
+        $(".errmsg").remove();
+        $(".clserror").removeClass("Errclr");
+        var ErrFlag = false;
+        if (flag == "I") {
+            $(".clserror").each(function () {
+                if ($(this).val() == "") {
+                    ErrFlag = true;
+                    $(this).addClass("Errclr");
+                    $(this).after("<span class='errmsg' style='color:red;'>Please enter " + $(this).attr("name") + "</span>")
+                }
+            });
+            if ($("#txtPassword").val() != $("#txtCnfrmPassword").val()) {
+                ErrFlag = true;
+                $("#txtPassword").addClass("Errclr");
+                $("#txtPassword").after("<span class='errmsg' style='color:red;'>Password mismatch. </span>")
+            }
+            if ($("#hdnLogoPath").val() == "") {
+                ErrFlag = true;
+                $("#dvFile").after("<span class='errmsg' style='color:red;'>Please upload logo. </span>")
+            }
+
+            var reg = /^\w+([\.-]?\w+)*@@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+            if (!reg.test($("#txtCompanyEmail").val())) {
+                ErrFlag = true;
+                $("#txtCompanyEmail").addClass("Errclr");
+                $("#txtCompanyEmail").after("<span class='errmsg' style='color:red;'>Please enter valid mail id. </span>");
+                $("#txtCompanyEmail").focus();
+            }
+            //if (!reg.test($("#txtContactPerMail").val())) {
+            //    ErrFlag = true;
+            //    $("#txtContactPerMail").addClass("Errclr");
+            //    $("#txtContactPerMail").after("<span class='errmsg' style='color:red;'>Please enter valid mail id. </span>")
+            //    $("#txtContactPerMail").focus();
+            //}
+
+            if (ErrFlag) {
+                return false;
+            }
+            //Validation End
+        }
+
+        var param = {
+            strPayrollID: flag != "I" ? $("#hdnCompanyID").val() : "NEW",
+            strCompanyName: $("#txtCompanyName").val(),
+            strCompanyType: $("#txtCompanyType").val(),
+            strCompanyEMail: $("#txtCompanyEmail").val(),
+            strCompanyPhnNo: $("#txtCompanyPhnNo").val(),
+            //StrContactPerson: $("#txtContactPerson").val(),
+            strStreet: $("#txtStreet").val(),
+            strCity: $("#txtCity").val(),
+            strState: $("#txtState").val(),
+            strCountry: $("#txtCountry").val(),
+            strPostalCode: $("#txtPostalCode").val(),
+            strLogoPath: $("#hdnLogoPath").val(),
+            strCompanyStatus: $("#rdnActive").prop("checked") == true ? "1" : "0",
+            //strCompanyLaunchDate: $("#txtLaunchDate").val(),
+            //strContactPersonMail: $("#txtContactPerMail").val(),
+            strUserName: $("#txtUserName").val(),
+            strPassword: $("#txtPassword").val(),
+            strEno: $("#txtEno").val(),
+            strEPF: $("#txtEPF").val(),
+            strCno: $("#txtCno").val(),
+            strSocgo: $("#txtSocgo").val(),
+            strZakarNo: $("#txtZakat").val(),
+            strFlag: flag
+        }
+
+        $.blockUI({
+            message: LoderDiv,
+            css: { padding: '5px' }
+        });
+
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("InsertCompanyDetails", "Home")",
+            data: JSON.stringify(param),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                $.unblockUI();
+                if (data.Status == "00") {
+                    if (flag == "D") {
+                        $("#DeleteModal").modal('hide');
+                    }
+                    alert(data.Result);
+                    $("#btnClose").click();
+
+                    $(".form-control").val("");
+                    if (flag != "I") {
+                        FetchCompanyDetails();
+                    }
+                }
+                else {
+                    alert(data.Message);
+                }
+            },
+            error: function (ex) {
+                $.unblockUI();
+                alert("Unable to connect remote server", "", '');
+            }
+        });
+    }
+
+    $(".file-browserinput").change(function () {
+        $("#hdnLogoPath").val("");
+        $("#dvFile").parent().find(".errmsg").remove();
+        var id = this.id;
+        var Strgetimg = $("#" + id).get(0);
+        var imgfile = Strgetimg.files;
+        var ImgSize = $('#' + id)[0].files[0].size;
+        var allowedExtensions =
+                    /(\.jpg|\.jpeg|\.png)$/i;
+
+        if (!allowedExtensions.exec(Strgetimg.value)) {
+            Strgetimg.value = '';
+            alert('Image format should be jpg or png');
+            return false;
+        }
+        if (!(ImgSize > 10000 && ImgSize < 500000)) {
+            alert('Image size should be greater than 100KB and less than equal to 500 KB');
+            Strgetimg.value = '';
+            return false;
+        }
+
+        var path = "";
+        if (imgfile.length > 0) {
+
+            var fileUpload = $("#" + id).get(0);
+            var files = fileUpload.files;
+
+            // Create FormData object
+            var fileData = new FormData();
+
+            // Looping over all files and add it to FormData object
+            for (var i = 0; i < files.length; i++) {
+                fileData.append(files[i].name, files[i]);
+            }
+
+            // Adding one more key to FormData object
+            fileData.append('username', 'Manas');
+
+            $.blockUI({
+                message: LoderDiv,
+                css: { padding: '5px' }
+            });
+            $.ajax({
+                url: '/Home/UploadFiles',
+                type: "POST",
+                contentType: false, // Not to set any content header
+                processData: false, // Not to process data
+                data: fileData,
+                success: function (data) {
+                    $.unblockUI();
+                    if (data.status = "00") {
+                        $("#hdnLogoPath").val(data.Result);
+                        $("#txtFile").val(imgfile[0].name);
+                    }
+                },
+                error: function (err) {
+                    $.unblockUI();
+                }
+            });
+        }
+    });
+
+    function FetchCompanyDetails() {
+        debugger
+
+        $.blockUI({
+            message: LoderDiv,
+            css: { padding: '5px' }
+        });
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("FetchCompanyDetails", "Home")",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                $.unblockUI();
+                if (data.Status == "00") {
+                    var CompanyDetails = JSON.parse(data.Result);
+                    CompanyDetailsAry = CompanyDetails;
+                    var CompanyBuilder = "";
+                    CompanyBuilder += '<table class="table  table-vcenter text-nowrap table-bordered border-bottom" id="company-list">'
+
+                    CompanyBuilder += '<thead>'
+                    CompanyBuilder += '<tr>'
+                    CompanyBuilder += '<th class="border-bottom-0 w-5">ID</th>'
+                    CompanyBuilder += '<th class="border-bottom-0">Company Name</th>'
+                    CompanyBuilder += '<th class="border-bottom-0">Company Type</th>'
+                    CompanyBuilder += '<th class="border-bottom-0">Company Email</th>'
+                    CompanyBuilder += '<th class="border-bottom-0">Company Phone</th>'
+                    CompanyBuilder += '<th class="border-bottom-0">Status</th>'
+                    CompanyBuilder += '<th class="border-bottom-0">View</th>'
+                    CompanyBuilder += '<th class="border-bottom-0">Edit</th>'
+                    CompanyBuilder += '<th class="border-bottom-0">Delete</th>'
+
+                    CompanyBuilder += '</tr>'
+                    CompanyBuilder += '</thead>'
+                    CompanyBuilder += '<tbody>'
+                    $.each(CompanyDetails, function (ind, val) {
+                        CompanyBuilder += '<tr>'
+
+                        CompanyBuilder += '<td>' + val.Com_Id + '</td>'
+
+                        CompanyBuilder += '<td>'
+                        CompanyBuilder += '<a href="#" class="d-flex sidebarmodal-collpase">'
+                        CompanyBuilder += '<img style="height: 50px;width: 50px;" src="data:image/jpeg;base64,' + val.Com_Logo + '" />'
+                        CompanyBuilder += '<div class="mt-0 mt-sm-4 d-block">'
+                        CompanyBuilder += '<h6 class="mb-0 fs-16">' + val.Com_Name + '</h6>'
+                        CompanyBuilder += '</div>'
+                        CompanyBuilder += '</a>'
+                        CompanyBuilder += '</td>'
+
+                        CompanyBuilder += '<td>' + val.Com_Type + '</td>'
+
+
+                        CompanyBuilder += '<td>' + val.Com_Email_Id + '</td>'
+
+                        CompanyBuilder += '<td>' + val.Com_Phone_No + '</td>'
+
+                        CompanyBuilder += '<td>'
+                        CompanyBuilder += '<span class="badge badge-success">' + (val.Com_Active_Status == "1" ? "Active" : "Inative") + '</span>'
+                        CompanyBuilder += '</td>'
+
+                        CompanyBuilder += '<td class="text-center">'
+                        CompanyBuilder += '<div class="d-flex">'
+                        CompanyBuilder += '<a href="#" class="action-btns1 sidebarmodal-collpase" data-toggle="tooltip" data-placement="top" title="View"  data-type="V"  onclick="triggerAction(this)" data-title="view" data-id="' + val.Com_Id + '">'
+                        CompanyBuilder += '<i class="feather feather-eye text-primary fa fa-eye clsIcon"></i>'
+                        CompanyBuilder += '</a>'
+                        CompanyBuilder += '</div>'
+                        CompanyBuilder += '</td>'
+
+                        CompanyBuilder += '<td class="text-center">'
+                        CompanyBuilder += '<div class="d-flex">'
+                        ///CompanyBuilder += '<a href="#" class="action-btns1" data-id="' + val.Com_Id + '" style="background-color: #6363f9;border: 1px solid #6363f9;">'
+                        CompanyBuilder += '<a class="btn btn-primary btn-icon btn-sm" data-toggle="modal" style="background-color: #6363f9;border: 1px solid #6363f9;"  data-id="' + val.Com_Id + '" data-type="E" onclick="triggerAction(this)" ><i class="fa fa-edit data-toggle=" tooltip"="" data-original-title="Edit"></i></a>'
+                        CompanyBuilder += '</div>'
+                        CompanyBuilder += '</td>'
+
+                        CompanyBuilder += '<td class="text-center">'
+                        CompanyBuilder += '<div class="d-flex">'
+                        CompanyBuilder += '<a href="#" class="action-btns1" data-toggle="tooltip" data-placement="top" title="Delete" data-id="' + val.Com_Id + '" data-type="D" onclick="triggerAction(this)" data-title="Edit"><i class="feather feather-trash-2 text-danger fa fa-trash-o clsIcon"></i></a>'
+                        CompanyBuilder += '</div>'
+                        CompanyBuilder += '</td>'
+
+                        CompanyBuilder += '</tr>'
+                    });
+
+                    CompanyBuilder += '</tbody>'
+                    CompanyBuilder += '</table>'
+
+                    $("#dvCompanyDetails").html(CompanyBuilder);
+                    $('#company-list').dataTable();
+                }
+                else {
+                    alert(data.Message);
+                }
+            },
+            error: function (ex) {
+                $.unblockUI();
+                showerralert("Unable to connect remote server", "", '');
+            }
+        });
+
+    }
+
+    function triggerAction(e) {
+        var type = $(e).data('type');
+        var id = $(e).data('id');
+        $("#hdnCompanyID").val(id);
+        if (type == "D") {
+            $("#DeleteModal").modal('show');
+            return false;
+        }
+        var SlctdDetails = $.grep(CompanyDetailsAry, function (val, i) {
+            return val.Com_Id == id;
+        });
+        if (SlctdDetails.length > 0) {
+            $("#txtCompanyName").val(SlctdDetails[0].Com_Name);
+            $("#txtCompanyType").val(SlctdDetails[0].Com_Type);
+            $("#txtCompanyEmail").val(SlctdDetails[0].Com_Email_Id);
+            $("#txtCompanyPhnNo").val(SlctdDetails[0].Com_Phone_No);
+            $("#txtStreet").val(SlctdDetails[0].Com_Address)
+            $("#txtCity").val(SlctdDetails[0].Com_CITY)
+            $("#txtState").val(SlctdDetails[0].Com_STATE)
+            $("#txtCountry").val(SlctdDetails[0].Com_COUNTRY)
+            $("#txtPostalCode").val(SlctdDetails[0].Com_Postal_Code)
+            SlctdDetails[0].Com_Active_Status == "1" ? $("#rdnActive").prop("checked", true) : $("#rdnActive").prop("checked", false);
+            $("#txtEno").val(SlctdDetails[0].Com_E_No)
+            $("#txtEPF").val(SlctdDetails[0].Com_EPF_No)
+            $("#txtCno").val(SlctdDetails[0].Com_C_No)
+            $("#txtSocgo").val(SlctdDetails[0].Com_SOCSO_No)
+            $("#txtZakat").val(SlctdDetails[0].Com_Zakat_No)
+            $(".clsCompany").hide();
+            $("#dvNewCompany").show();
+            $("#dvAddCompany").hide();
+            $(".clsHide").hide();
+            if (type == "V") {
+                $("#btnUpdate,#btnSubmit").hide();
+                $(".form-control").attr("disabled", "disabled");
+            }
+            else if (type == "E") {
+                $("#btnSubmit").hide();
+                $("#btnUpdate").show();
+                $(".form-control").removeAttr("disabled");
+            }
+            else {
+                $(".form-control").attr("disabled", "disabled");
+            }
+
+        }
+    }
+
+</script>

@@ -1,0 +1,195 @@
+﻿
+@{
+    ViewBag.Title = "EmployeeList";
+    Layout = "~/Views/Shared/_MasterLayout.cshtml";
+}
+
+
+<div class="content container-fluid p-b">
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h4 class="page-title">Designation</h4>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="/orange/app/main/dashboard">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active">Employee List</li>
+                </ul>
+            </div>
+            <div class="col-auto float-right ml-auto">
+                <div class="d-flex align-items-end flex-wrap my-auto right-content breadcrumb-right">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--End Page header-->
+<!-- Row -->
+<div class="row">
+    <div class="col-xl-12 col-md-12 col-lg-12">
+        <div class="card">
+            <div class="card-header  border-0">
+                <h4 class="card-title">Employee List</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive" id="dvEmployeeList">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--Delete Department Modal -->
+<div class="modal fade" id="DeleteModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Are you sure want to delete ?</label>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-outline-primary" data-dismiss="modal" id="btnDltClose">Close</a>
+                <a href="#" class="btn btn-primary" onclick="FetchEmployeeDetails('D')">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Delete Edit Department Modal  -->
+
+<input type="hidden" id="hdnId" />
+
+<script>
+    $(document).ready(function () {
+        FetchEmployeeDetails('F');
+    });
+
+    function FetchEmployeeDetails(flag) {
+
+        $.blockUI({
+            message: LoderDiv,
+            css: { padding: '5px' }
+        });
+        var param = {
+            strFlag: flag,
+            strEmpID: flag == "D" ? $("#hdnId").val() : ""
+        }
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("ManageEmployeeDetails", "Home")",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(param),
+            dataType: "json",
+            success: function (data) {
+                $.unblockUI();
+                if (data.Status == "00") {
+                    if (flag == "D") {
+                        alert(data.Result);
+                        $("#DeleteModal").modal('hide');
+                        location.reload();
+                        return false;
+                    }
+                    var EmployeeDetails = JSON.parse(data.Result);
+                    EmployeeDetails = EmployeeDetails.Temp;
+                    var EmployeeBuilder = "";
+                    EmployeeBuilder += '<table class="table  table-vcenter text-nowrap table-bordered border-bottom" id="Employee-list">'
+
+                    EmployeeBuilder += '<thead>'
+                    EmployeeBuilder += '<tr>'
+                    EmployeeBuilder += '<th class="border-bottom-0 w-5">Employee ID</th>'
+                    EmployeeBuilder += '<th class="border-bottom-0">Employee Name</th>'
+                    EmployeeBuilder += '<th class="border-bottom-0">Designation</th>'
+                    EmployeeBuilder += '<th class="border-bottom-0">Mobile No</th>'
+                    EmployeeBuilder += '<th class="border-bottom-0">Email ID</th>'
+                    EmployeeBuilder += '<th class="border-bottom-0">Gender</th>'
+                    EmployeeBuilder += '<th class="border-bottom-0">Marriage Status</th>'
+                    EmployeeBuilder += '<th class="border-bottom-0">City</th>'
+                    EmployeeBuilder += '<th class="border-bottom-0">State</th>'
+                    EmployeeBuilder += '<th class="border-bottom-0">Country</th>'
+                    EmployeeBuilder += '<th class="border-bottom-0">Postal Code</th>'
+                    EmployeeBuilder += '<th class="border-bottom-0">Residence Status</th>'
+                    EmployeeBuilder += '<th class="border-bottom-0">Nationality</th>'
+                    EmployeeBuilder += '<th class="border-bottom-0">Join Date</th>'
+                    EmployeeBuilder += '<th class="border-bottom-0">Payroll Type</th>'
+                    EmployeeBuilder += '<th class="border-bottom-0">View</th>'
+                    EmployeeBuilder += '<th class="border-bottom-0">Edit</th>'
+                    EmployeeBuilder += '<th class="border-bottom-0">Delete</th>'
+
+                    EmployeeBuilder += '</tr>'
+                    EmployeeBuilder += '</thead>'
+                    EmployeeBuilder += '<tbody>'
+                    $.each(EmployeeDetails, function (ind, val) {
+                        EmployeeBuilder += '<tr>'
+                        EmployeeBuilder += '<td>' + val.Emp_Id + '</td>'
+                        EmployeeBuilder += '<td>' + (val.Emp_Tittle + ' ' + val.Emp_Name) + '</td>'
+                        EmployeeBuilder += '<td>' + val.Emp_Position + '</td>'
+                        EmployeeBuilder += '<td>' + val.Emp_Mobile_No + '</td>'
+                        EmployeeBuilder += '<td>' + val.Emp_Email_Id + '</td>'
+                        EmployeeBuilder += '<td>' + val.Emp_Gender + '</td>'
+                        EmployeeBuilder += '<td>' + val.Emp_Marital_Status + '</td>'
+                        EmployeeBuilder += '<td>' + val.Emp_City + '</td>'
+                        EmployeeBuilder += '<td>' + val.Emp_State + '</td>'
+                        EmployeeBuilder += '<td>' + val.Emp_Country + '</td>'
+                        EmployeeBuilder += '<td>' + val.Emp_Postal_Code + '</td>'
+                        EmployeeBuilder += '<td>' + val.Emp_Residence_Status + '</td>'
+                        EmployeeBuilder += '<td>' + val.Emp_Nationality + '</td>'
+                        EmployeeBuilder += '<td>' + val.Emp_Join_Date + '</td>'
+                        EmployeeBuilder += '<td>' + val.Emp_Payroll_Type + '</td>'
+                        EmployeeBuilder += '<td class="text-center">'
+                        EmployeeBuilder += '<div class="d-flex">'
+                        EmployeeBuilder += '<a href="#" class="action-btns1 sidebarmodal-collpase" data-toggle="tooltip" data-placement="top" title="View"  data-type="V"  onclick="triggerAction(this)" data-title="view" data-id="' + val.Emp_Id + '">'
+                        EmployeeBuilder += '<i class="feather feather-eye text-primary fa fa-eye clsIcon"></i>'
+                        EmployeeBuilder += '</a>'
+                        EmployeeBuilder += '</div>'
+                        EmployeeBuilder += '</td>'
+
+                        EmployeeBuilder += '<td class="text-center">'
+                        EmployeeBuilder += '<div class="d-flex">'
+                        EmployeeBuilder += '<a class="btn btn-primary btn-icon btn-sm" data-toggle="modal" style="background-color: #6363f9;border: 1px solid #6363f9;"  data-id="' + val.Emp_Id + '" data-type="E" onclick="triggerAction(this)" ><i class="fa fa-edit data-toggle=" tooltip"="" data-original-title="Edit"></i></a>'
+                        EmployeeBuilder += '</div>'
+                        EmployeeBuilder += '</td>'
+
+                        EmployeeBuilder += '<td class="text-center">'
+                        EmployeeBuilder += '<div class="d-flex">'
+                        EmployeeBuilder += '<a href="#" class="action-btns1" data-toggle="tooltip" data-placement="top" title="Delete" data-id="' + val.Emp_Id + '" data-type="D" onclick="triggerAction(this)" data-title="Edit"><i class="feather feather-trash-2 text-danger fa fa-trash-o clsIcon"></i></a>'
+                        EmployeeBuilder += '</div>'
+                        EmployeeBuilder += '</td>'
+                        EmployeeBuilder += '</tr>'
+                    });
+
+                    EmployeeBuilder += '</tbody>'
+                    EmployeeBuilder += '</table>'
+
+                    $("#dvEmployeeList").html(EmployeeBuilder);
+                    $('#Employee-list').dataTable();
+                }
+                else {
+                    alert(data.Message);
+                }
+            },
+            error: function (ex) {
+                $.unblockUI();
+                showerralert("Unable to connect remote server", "", '');
+            }
+        });
+
+    }
+
+    function triggerAction(e) {
+        var id = $(e).data("id");
+        var type = $(e).data("type");
+        if (type == "D") {
+            $("#hdnId").val(id);
+            $("#DeleteModal").modal('show');
+            return falsel
+        }
+        else {
+            window.location.href = '@Url.Action("EmployeeCreation", "Home")?id=' + id + '&type=' + type + '';
+        }
+    }
+</script>

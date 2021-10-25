@@ -1,0 +1,214 @@
+﻿
+@{
+    ViewBag.Title = "LeaveForm";
+    Layout = "~/Views/Shared/_MasterLayout.cshtml";
+}
+
+<!--Page header-->
+
+<div class="content container-fluid p-b">
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h4 class="page-title">Leave Form</h4>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="/orange/app/main/dashboard">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active">Leave FOrm</li>
+                </ul>
+            </div>
+            <div class="col-auto float-right ml-auto">
+                <div class="d-flex align-items-end flex-wrap my-auto right-content breadcrumb-right">
+                    <div class="btn-list" id="dvAddCompany">
+                        <a href="#" class="btn btn-primary mr-3" data-toggle="modal" onclick="triggerNewPopup()">Leave Request</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--End Page header-->
+<!-- Row -->
+<div class="row">
+    <div class="col-xl-12 col-md-12 col-lg-12">
+        <div class="card">
+            <div class="card-header  border-0">
+                <h4 class="card-title">Leave Summary</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive" id="dvDesignationDetails">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Row-->
+
+<div id="LeaveRequestmodal" class="modal custom-modal fade" role="dialog" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Leave Request Form</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Leave From <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" id="txtLeaveFrom">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Leave To</label>
+                                <input class="form-control" type="text" id="txtLeaveTo">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">No of Leave <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" id="txtLeaveDays">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Leave Type<span class="text-danger">*</span></label>
+                                <select class="form-control" id="ddlLeaveType">
+                                    <option value="">-Select-</option>
+                                    <option value="C">Casual Leave</option>
+                                    <option value="S">Sick Leave</option>
+                                    <option value="L">LOP</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Willing to work</label>
+                                <input class="form-control" type="text" id="txtWillingtoWork">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Emergency Contact No</label>
+                                <input class="form-control" type="text" id="txtEmergencyConNo">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Reason <span class="text-danger">*</span></label>
+                                <textarea class="form-control" type="text" id="txtLeaveReason"></textarea> 
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn" onclick="ManageLeaveRequest()">Submit</button>
+                        <button class="btn btn-primary submit-btn">Clear</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Add Department Modal  -->
+<!--Edit Department Modal -->
+<div class="modal fade" id="DeleteModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Are you sure want to delete ?</label>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-outline-primary" data-dismiss="modal" id="btnDltClose">Close</a>
+                <a href="#" class="btn btn-primary" id="btnDelete" data-flag="D" onclick="ManageDesignation()">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Edit Department Modal  -->
+<input type="hidden" id="hdnFlag" value="F" />
+<input type="hidden" id="hdnDepID" />
+<input type="hidden" id="hdnDesID" />
+
+
+
+<script>
+    var DepartmentAry = [];
+    $(document).ready(function () {
+        $("#txtLeaveFrom,#txtLeaveTo").datepicker({
+            dateFormat: "dd/mm/yy",
+            minDate: '-50y',
+            maxDate: '10y',
+            changeMonth: true,
+            changeYear: true,
+        });
+        
+    });
+
+    function ManageLeaveRequest(type) {
+
+        $(".errmsg").remove();
+        $(".clsMandatory").removeClass("Errclr");
+        var ErrFlag = false;
+        $(".clsMandatory").each(function () {
+            if ($(this).val() == "") {
+                ErrFlag = true;
+                $(this).addClass("Errclr");
+                $(this).after("<span class='errmsg' style='color:red;'>Please enter " + $(this).attr("name") + "</span>")
+            }
+        });
+        if (ErrFlag) {
+            return false;
+        }
+
+        var param = {
+            strLeaveType : $("#txtLeaveFrom").val(),
+            strLeaveFrom :$("#txtLeaveTo").val(),
+            strLeaveTO :$("#txtLeaveDays").val(),
+            strLeaveDays :$("#txtWillingtoWork").val(),
+            strReason :$("#ddlLeaveType").val(),
+            strEmergencyCOnt :$("#txtLeaveReason").val(),
+            strWillingtoWork :$("#txtEmergencyConNo").val()
+        }
+        $.blockUI({
+            message: LoderDiv,
+            css: { padding: '5px' }
+        });
+
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("ManageLeaveRequest", "Home")",
+            data: JSON.stringify(param),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                $.unblockUI();
+                if (data.Status == "00") {
+                    if (type == "U") {
+                        window.location.href = '@Url.Action("EmployeeList", "Home")';
+                        return false;
+                    }
+                    alert(data.Result);
+                }
+                else {
+                    alert(data.Message);
+                }
+            },
+            error: function (ex) {
+                $.unblockUI();
+                alert("Unable to connect remote server", "", '');
+            }
+        });
+    }
+
+    function triggerNewPopup() {
+        $('#LeaveRequestmodal').modal('show');
+    }
+ </script>
