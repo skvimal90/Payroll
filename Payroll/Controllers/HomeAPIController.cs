@@ -19,6 +19,7 @@ namespace Payroll.Controllers
         #region Eompany Management
         public RQRS.ResponseData CompanyManagement(RQRS.CompanyRegistration CompanyRegistration)
         {
+            string test = string.Empty;
             DataSet dsOutput = new DataSet();
             RQRS.ResponseData ResponseData = new RQRS.ResponseData();
             string strErrorMsg = string.Empty;
