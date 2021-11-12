@@ -120,7 +120,7 @@ namespace Payroll.Models
 
         public class StoreProcedure
         {
-
+            public static string P_MANAGE_PAYROLL_DETAILS = "P_MANAGE_PAYROLL_DETAILS";
             public static string P_MANAGE_COMPANY_DETAILS = "P_MANAGE_COMPANY_DETAILS";
             public static string P_LOGIN_DETAILS = "P_LOGIN_DETAILS";
             public static string P_MANAGE_DEPARTMENT = "P_MANAGE_DEPARTMENT";
@@ -128,6 +128,7 @@ namespace Payroll.Models
             public static string P_INSERT_EMPLOYEE_DETAILS = "P_INSERT_EMPLOYEE_DETAILS";
             public static string P_MANAGE_EMPLOYEE_DETAILS = "P_MANAGE_EMPLOYEE_DETAILS";
             public static string P_INSERT_LEAVE_REQUEST = "P_INSERT_LEAVE_REQUEST";
+
             
         }
     }

@@ -16,7 +16,8 @@ namespace Payroll.Controllers
 {
     public class HomeAPIController : ApiController
     {
-        #region Eompany Management
+
+        #region company Management
         public RQRS.ResponseData CompanyManagement(RQRS.CompanyRegistration CompanyRegistration)
         {
             string test = string.Empty;
@@ -43,7 +44,7 @@ namespace Payroll.Controllers
                     hsParam.Add("Com_CONTACT_PERSON_CONTACT_NO2", "");
                     hsParam.Add("Com_CONTACT_PERSON_EMAIL_ID", CompanyRegistration.strCompanyEMail ?? "");
                     hsParam.Add("Com_COMPANY_START_YEAR", "");
-                    hsParam.Add("Com_ACTIVE_STATUS", CompanyRegistration.strCompanyStatus ?? "");
+                   // hsParam.Add("Com_ACTIVE_STATUS", CompanyRegistration.strCompanyStatus ?? "");
                     hsParam.Add("Com_Logo",  (CompanyRegistration.strLogoPath != null ?ImageToStream(CompanyRegistration.strLogoPath):new byte[] { }));// "data:image/png;base64,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");
                     hsParam.Add("Com_Registration_No", "");
                     hsParam.Add("Com_E_No", (CompanyRegistration.strEno ?? ""));
@@ -126,8 +127,112 @@ namespace Payroll.Controllers
         }
         #endregion
 
+        #region PayRoll_User Management
+        public RQRS.ResponseData PayRoll_User_Management(RQRS.CompanyRegistration CompanyRegistration)
+        {
+            string test = string.Empty;
+            DataSet dsOutput = new DataSet();
+            RQRS.ResponseData ResponseData = new RQRS.ResponseData();
+            string strErrorMsg = string.Empty;
+            string strStoredProcedure = string.Empty;
+            try
+            {
+                Hashtable hsParam = new Hashtable();
+                hsParam.Add("PRL_ID", CompanyRegistration.strPayrollID ?? "");
+                hsParam.Add("PRL_Name", CompanyRegistration.strCompanyName ?? "");
+                hsParam.Add("PRL_Address", CompanyRegistration.strStreet ?? "");
+                hsParam.Add("PRL_Phone_No", CompanyRegistration.strCompanyPhnNo ?? "");
+                hsParam.Add("PRL_Mobile_No", CompanyRegistration.strCompanyPhnNo ?? "");
+                hsParam.Add("PRL_Email_Id", CompanyRegistration.strCompanyEMail ?? "");
+                hsParam.Add("PRL_CITY", CompanyRegistration.strCity ?? "");
+                hsParam.Add("PRL_STATE", CompanyRegistration.strState ?? "");
+                hsParam.Add("PRL_COUNTRY", CompanyRegistration.strCountry ?? "");
+                hsParam.Add("PRL_Postal_Code", CompanyRegistration.strPostalCode ?? "");
+                hsParam.Add("PRL_COMPANY_START_YEAR", "");
+                hsParam.Add("PRL_Logo", (CompanyRegistration.strLogoPath != null ? ImageToStream(CompanyRegistration.strLogoPath) : new byte[] { }));// "data:image/png;base64,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");
+                hsParam.Add("PRL_Registration_No", "");
+                //hsParam.Add("PRL_E_No", (CompanyRegistration.strEno ?? ""));
+                //hsParam.Add("PRL_C_No", (CompanyRegistration.strCno ?? ""));
+                //hsParam.Add("PRL_EPF_No", (CompanyRegistration.strEPF ?? ""));
+                //hsParam.Add("PRL_SOCSO_No", (CompanyRegistration.strSocgo ?? ""));
+                //hsParam.Add("PRL_Zakat_No", (CompanyRegistration.strZakarNo ?? ""));
+                hsParam.Add("PRL_Password", CompanyRegistration.strPassword ?? "");
+                hsParam.Add("PRL_Username", CompanyRegistration.strUserName ?? "");
+                hsParam.Add("Username", "");
+                hsParam.Add("FLAG", CompanyRegistration.strFlag);
+
+                dsOutput = DBHandler.ExecProcedureReturnsDataset(DBHandler.StoreProcedure.P_MANAGE_PAYROLL_DETAILS, hsParam, ref strErrorMsg);
+
+                if (dsOutput != null && dsOutput.Tables.Count > 0 && dsOutput.Tables[0].Columns.Count > 0)
+                {
+                    if (dsOutput.Tables[0].Columns.Contains("Status") && dsOutput.Tables[0].Rows[0]["Status"].ToString() == "01")
+                    {
+                        ResponseData.strStatus = "01";
+                        ResponseData.strResponse = "";
+                        ResponseData.strErrorMessage = dsOutput.Tables[0].Columns.Contains("Message") ? dsOutput.Tables[0].Rows[0]["Message"].ToString() : "Unable to procees your request.";
+                    }
+                    else
+                    {
+                        if (CompanyRegistration.strFlag != "F")
+                        {
+                            ResponseData.strStatus = "00";
+                            ResponseData.strResponse = dsOutput.Tables[0].Columns.Contains("Message") ? dsOutput.Tables[0].Rows[0]["Message"].ToString() : "Unable to procees your request.";
+
+                        }
+                        else
+                        {
+
+                            ResponseData.strStatus = "00";
+                            var CompanyDetails = (from dr in dsOutput.Tables[0].AsEnumerable()
+                                                  select new
+                                                  {
+                                                      Com_Logo = Convert.ToBase64String((byte[])dr["Com_Logo"]),
+                                                      Com_Id = dr["Com_Id"],
+                                                      Com_Name = dr["Com_Name"],
+                                                      Com_Type = dr["Com_Type"],
+                                                      Com_COMPANY_START_YEAR = dr["Com_COMPANY_START_YEAR"],
+                                                      Com_Email_Id = dr["Com_Email_Id"],
+                                                      Com_Phone_No = dr["Com_Phone_No"],
+                                                      Com_STATE = dr["Com_STATE"],
+                                                      Com_Registration_No = dr["Com_Registration_No"],
+                                                      Com_E_No = dr["Com_E_No"],
+                                                      Com_C_No = dr["Com_C_No"],
+                                                      Com_EPF_No = dr["Com_EPF_No"],
+                                                      Com_SOCSO_No = dr["Com_SOCSO_No"],
+                                                      Com_Zakat_No = dr["Com_Zakat_No"],
+                                                      Com_Created_Date = dr["Com_Created_Date"],
+                                                      Com_Created_By = dr["Com_Created_By"],
+                                                      Com_Active_Status = dr["Com_Active_Status"],
+                                                      Com_Address = dr["Com_Address"],
+                                                      Com_CITY = dr["Com_CITY"],
+                                                      Com_COUNTRY = dr["Com_COUNTRY"],
+                                                      Com_Postal_Code = dr["Com_Postal_Code"],
+                                                      Com_CONTACT_PERSON_EMAIL_ID = dr["Com_CONTACT_PERSON_EMAIL_ID"]
+                                                  });
+                            DataTable dsResult = Modal.ConvertToDataTable(CompanyDetails);
+                            ResponseData.strResponse = JsonConvert.SerializeObject(CompanyDetails);
+                        }
+                    }
+                }
+                else
+                {
+                    ResponseData.strStatus = "01";
+                    ResponseData.strResponse = "";
+                    ResponseData.strErrorMessage = "Unable to process your request";
+                }
+            }
+            catch (Exception ex)
+            {
+                ResponseData.strStatus = "01";
+                ResponseData.strResponse = "";
+                ResponseData.strErrorMessage = "Problem occured while processing request(#01).";
+            }
+            return ResponseData;
+        }
+        #endregion
+
         #region Department
-       public RQRS.ResponseData DepartmentManagement(RQRS.DepartmentReq DepartmentReq)
+        public RQRS.ResponseData DepartmentManagement(RQRS.DepartmentReq DepartmentReq)
         {
             DataSet dsOutput = new DataSet();
             RQRS.ResponseData ResponseData = new RQRS.ResponseData();

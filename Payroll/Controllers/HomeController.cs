@@ -192,6 +192,80 @@ namespace Payroll.Controllers
         }
         #endregion
 
+        #region Add Pay Roll 
+        public ActionResult AddPayRoll()
+        {
+            return View();
+        }
+        public ActionResult InsertPayRollDetails(RQRS.CompanyRegistration CompanyRegistration)
+        {
+            string strStatus = string.Empty;
+            string strMessage = string.Empty;
+            string strResult = string.Empty;
+            string strResponse = string.Empty;
+            try
+            {
+
+                string strRequest = JsonConvert.SerializeObject(CompanyRegistration);
+                strResponse = Modal.InvokeServiceReq("HomeAPI/PayRoll_User_Management", strRequest, "POST");
+                RQRS.ResponseData Response = JsonConvert.DeserializeObject<RQRS.ResponseData>(strResponse);
+                if (Response.strStatus == "00")
+                {
+                    strStatus = "00";
+                    strResult = Response.strResponse;
+                }
+                else
+                {
+                    strStatus = "01";
+                    strMessage = Response.strErrorMessage;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                strStatus = "01";
+                strMessage = "Problem occured while processing request(#05).";
+            }
+            return Json(new { Status = strStatus, Message = strMessage, Result = strResult });
+        }
+
+        public ActionResult FetchPayRollDetails()
+        {
+            string strStatus = string.Empty;
+            string strMessage = string.Empty;
+            string strResult = string.Empty;
+            string strResponse = string.Empty;
+            try
+
+            {
+                RQRS.CompanyRegistration CompanyRegistration = new RQRS.CompanyRegistration();
+                CompanyRegistration.strPayrollID = "";
+                CompanyRegistration.strFlag = "F";
+                string strRequest = JsonConvert.SerializeObject(CompanyRegistration);
+                strResponse = Modal.InvokeServiceReq("HomeAPI/PayRoll_User_Management", strRequest, "POST");
+                RQRS.ResponseData Response = JsonConvert.DeserializeObject<RQRS.ResponseData>(strResponse);
+                if (Response.strStatus == "00")
+                {
+                    strStatus = "00";
+                    strResult = Response.strResponse;
+                }
+                else
+                {
+                    strStatus = "01";
+                    strMessage = Response.strErrorMessage;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                strStatus = "01";
+                strMessage = "Problem occured while processing request(#05).";
+            }
+            return Json(new { Status = strStatus, Message = strMessage, Result = strResult });
+        }
+
+        #endregion
+
         #region Department
         public ActionResult Department()
         {
