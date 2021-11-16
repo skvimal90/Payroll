@@ -15,7 +15,7 @@
                     <li class="breadcrumb-item">
                         <a href="/orange/app/main/dashboard">Dashboard</a>
                     </li>
-                    <li class="breadcrumb-item active">Leave FOrm</li>
+                    <li class="breadcrumb-item active">Leave Form</li>
                 </ul>
             </div>
             <div class="col-auto float-right ml-auto">
@@ -29,6 +29,53 @@
     </div>
 </div>
 <!--End Page header-->
+
+@*<div class="col-md-12 clsCompany" id="dvDashBoard">
+    <div class="card">
+        <div class="card-body">
+            <div class="row" style="display:none">
+                <div class="col-xl-3">
+                    <div class="form-group">
+                        <label class="form-label">Package</label>
+                        <select class="form-control custom-select select2" data-placeholder="Select Package">
+                            <option label="Select Package"></option>
+                            <option value="1">Free</option>
+                            <option value="2">Basic</option>
+                            <option value="3">Premium</option>
+                            <option value="4">Advanced</option>
+                            <option value="5">Enterprise</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-xl-3">
+                    <div class="form-group">
+                        <label class="form-label">Package Type:</label>
+                        <select class="form-control custom-select select2" data-placeholder="Select Package">
+                            <option label="Select Package"></option>
+                            <option value="1">Monthly</option>
+                            <option value="2">Yearly</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-xl-2">
+                    <div class="form-group mt-xl-5">
+                        <a href="#" class="btn btn-primary btn-block">Search</a>
+                    </div>
+                </div>
+                <div class="col-xl-2">
+                    <div class="form-group mt-xl-5">
+                        <a href="#" class="btn btn-danger btn-block">Reset</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive company-table" id="dvLeaveDetails">
+
+            </div>
+        </div>
+    </div>
+</div>*@
 <!-- Row -->
 <div class="row">
     <div class="col-xl-12 col-md-12 col-lg-12">
@@ -37,7 +84,8 @@
                 <h4 class="card-title">Leave Summary</h4>
             </div>
             <div class="card-body">
-                <div class="table-responsive" id="dvDesignationDetails">
+                <div class="table-responsive company-table" id="dvLeaveDetails">
+
                 </div>
             </div>
         </div>
@@ -53,62 +101,61 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
             </div>
             <div class="modal-body">
-                <form>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="col-form-label">Leave From <span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" id="txtLeaveFrom">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="col-form-label">Leave To</label>
-                                <input class="form-control" type="text" id="txtLeaveTo">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="col-form-label">No of Leave <span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" id="txtLeaveDays">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="col-form-label">Leave Type<span class="text-danger">*</span></label>
-                                <select class="form-control" id="ddlLeaveType">
-                                    <option value="">-Select-</option>
-                                    <option value="C">Casual Leave</option>
-                                    <option value="S">Sick Leave</option>
-                                    <option value="L">LOP</option>
-                                </select>
-                            </div>
-                        </div>
-                        
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="col-form-label">Willing to work</label>
-                                <input class="form-control" type="text" id="txtWillingtoWork">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="col-form-label">Emergency Contact No</label>
-                                <input class="form-control" type="text" id="txtEmergencyConNo">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="col-form-label">Reason <span class="text-danger">*</span></label>
-                                <textarea class="form-control" type="text" id="txtLeaveReason"></textarea> 
-                            </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-form-label">Leave From <span class="text-danger">*</span></label>
+                            <input class="form-control clsMandatory" type="text" id="txtLeaveFrom">
                         </div>
                     </div>
-                    <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" onclick="ManageLeaveRequest()">Submit</button>
-                        <button class="btn btn-primary submit-btn">Clear</button>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-form-label">Leave To</label>
+                            <input class="form-control clsMandatory" type="text" id="txtLeaveTo">
+                        </div>
                     </div>
-                </form>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-form-label">No of Leave <span class="text-danger">*</span></label>
+                            <input class="form-control" type="text" id="txtLeaveDays" disabled>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-form-label">Leave Type<span class="text-danger">*</span></label>
+                            <select class="form-control clsMandatory" id="ddlLeaveType">
+                                <option value="">-Select-</option>
+                                <option value="C">Casual Leave</option>
+                                <option value="M">Sick Leave</option>
+                                <option value="ML">Personal Leave</option>
+                                <option value="L">LOP</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-form-label">Willing to work</label>
+                            <input class="form-control" type="text" id="txtWillingtoWork">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-form-label">Emergency Contact No</label>
+                            <input class="form-control" type="text" id="txtEmergencyConNo">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-form-label">Reason <span class="text-danger">*</span></label>
+                            <textarea class="form-control clsMandatory" type="text" id="txtLeaveReason"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="submit-section">
+                    <button class="btn btn-primary submit-btn" onclick="ManageLeaveRequest()">Submit</button>
+                    <button class="btn btn-primary submit-btn" onclick="clearPopup()">Clear</button>
+                </div>
             </div>
         </div>
     </div>
@@ -149,9 +196,50 @@
             changeMonth: true,
             changeYear: true,
         });
-        
+        $("#txtLeaveFrom").on('change keyup paste', function () {
+            $("#txtLeaveTo").datepicker("destroy");
+            $("#txtLeaveTo").val("");
+            $("#txtLeaveTo").datepicker({
+                minDate: $("#txtLeaveFrom").val(),
+                maxDate: '1y',
+                dateFormat: "dd/mm/yy",
+                changeMonth: true,
+                changeYear: true,
+            });
+            if ($("#txtLeaveFrom").val() != "" && $("#txtLeaveTo") != "") {
+                $("#txtLeaveDays").val(daysCalculation($("#txtLeaveFrom").val(), $("#txtLeaveTo").val()));
+            }
+
+        });
+        $("#txtLeaveTo").on('change keyup paste', function () {
+            if ($("#txtLeaveFrom").val() != "" && $("#txtLeaveTo") != "") {
+                if ($("#txtLeaveFrom").val() == $("#txtLeaveTo").val())
+                    $("#txtLeaveDays").val("1")
+                else
+                    $("#txtLeaveDays").val(parseInt(daysCalculation($("#txtLeaveFrom").val(), $("#txtLeaveTo").val())) + 1);
+            }
+
+        });
+
+        FetchLeaveDetails();
+
     });
 
+    function daysCalculation(FromDate, ToDate) {
+        FromDate = FromDate.split('/')[1] + "/" + FromDate.split('/')[0] + "/" + FromDate.split('/')[2];
+        ToDate = ToDate.split('/')[1] + "/" + ToDate.split('/')[0] + "/" + ToDate.split('/')[2];
+        var date1 = new Date(FromDate);
+        var date2 = new Date(ToDate);
+        var diffTime = Math.abs(date2 - date1);
+        var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        if (diffDays > 0) {
+            return diffDays;
+        }
+        else {
+            return "";
+        }
+
+    }
     function ManageLeaveRequest(type) {
 
         $(".errmsg").remove();
@@ -169,13 +257,13 @@
         }
 
         var param = {
-            strLeaveType : $("#txtLeaveFrom").val(),
-            strLeaveFrom :$("#txtLeaveTo").val(),
-            strLeaveTO :$("#txtLeaveDays").val(),
-            strLeaveDays :$("#txtWillingtoWork").val(),
-            strReason :$("#ddlLeaveType").val(),
-            strEmergencyCOnt :$("#txtLeaveReason").val(),
-            strWillingtoWork :$("#txtEmergencyConNo").val()
+            strLeaveType: $("#ddlLeaveType").val(),
+            strLeaveFrom: $("#txtLeaveFrom").val(),
+            strLeaveTO: $("#txtLeaveTo").val(),
+            strLeaveDays: $("#txtLeaveDays").val(),
+            strReason: $("#txtLeaveReason").val(),
+            strEmergencyCOnt: $("#txtEmergencyConNo").val(),
+            strWillingtoWork: $("#txtWillingtoWork").val()
         }
         $.blockUI({
             message: LoderDiv,
@@ -190,12 +278,14 @@
             dataType: "json",
             success: function (data) {
                 $.unblockUI();
+                $("#LeaveRequestmodal").modal('hide');
                 if (data.Status == "00") {
                     if (type == "U") {
                         window.location.href = '@Url.Action("EmployeeList", "Home")';
                         return false;
                     }
                     alert(data.Result);
+                    clearPopup();
                 }
                 else {
                     alert(data.Message);
@@ -203,6 +293,7 @@
             },
             error: function (ex) {
                 $.unblockUI();
+                $("#LeaveRequestmodal").modal('hide');
                 alert("Unable to connect remote server", "", '');
             }
         });
@@ -211,4 +302,100 @@
     function triggerNewPopup() {
         $('#LeaveRequestmodal').modal('show');
     }
- </script>
+    function clearPopup() {
+        $(".form-control").val("");
+    }
+    function FetchLeaveDetails() {
+        debugger
+
+        $.blockUI({
+            message: LoderDiv,
+            css: { padding: '5px' }
+        });
+        var param = {
+            strLeaveFrom: "20211101",
+            strLeaveTO: "20211131",
+            strStatus: "",
+            strFlag:"F",
+        }
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("ManageLeaveRequest", "Home")",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(param),
+            dataType: "json",
+            success: function (data) {
+                $.unblockUI();
+                if (data.Status == "00") {
+                    var LeaveDetails = JSON.parse(data.Result);
+                    LeaveDetailsAry = LeaveDetails.Temp;
+                    var LeaveBuilder = "";
+                    LeaveBuilder += '<table class="table  table-vcenter text-nowrap table-bordered border-bottom" id="Leave-list">'
+
+                    LeaveBuilder += '<thead>'
+                    LeaveBuilder += '<tr>'
+                    LeaveBuilder += '<th class="border-bottom-0 w-5">ID</th>'
+                    LeaveBuilder += '<th class="border-bottom-0">Leave Type</th>'
+                    LeaveBuilder += '<th class="border-bottom-0">Leave From </th>'
+                    LeaveBuilder += '<th class="border-bottom-0">Leave To</th>'
+                    LeaveBuilder += '<th class="border-bottom-0">Leave Days</th>'
+                    LeaveBuilder += '<th class="border-bottom-0">Status</th>'
+                    LeaveBuilder += '<th class="border-bottom-0">Reason</th>'
+                    LeaveBuilder += '<th class="border-bottom-0">Edit</th>'
+                    LeaveBuilder += '<th class="border-bottom-0">Delete</th>'
+
+                    LeaveBuilder += '</tr>'
+                    LeaveBuilder += '</thead>'
+                    LeaveBuilder += '<tbody>'
+                    $.each(LeaveDetails.Temp, function (ind, val) {
+                        LeaveBuilder += '<tr>'
+
+                        LeaveBuilder += '<td>' + ind + '</td>'
+
+                        LeaveBuilder += '<td>' + val.Leave_Type + '</td>'
+
+                        LeaveBuilder += '<td>' + val.Leave_From + '</td>'
+
+
+                        LeaveBuilder += '<td>' + val.Leave_To + '</td>'
+
+                        LeaveBuilder += '<td>' + val.Leave_Days + '</td>'
+
+                        LeaveBuilder += '<td>' + val.Leave_Status + '</td>'
+                        LeaveBuilder += '<td>' + val.Reason + '</td>'
+
+
+                        LeaveBuilder += '<td class="text-center">'
+                        LeaveBuilder += '<div class="d-flex">'
+                        ///LeaveBuilder += '<a href="#" class="action-btns1" data-id="' + val.Com_Id + '" style="background-color: #6363f9;border: 1px solid #6363f9;">'
+                        LeaveBuilder += '<a class="btn btn-primary btn-icon btn-sm" data-toggle="modal" style="background-color: #6363f9;border: 1px solid #6363f9;"  data-id="' + val.Com_Id + '" data-type="E" onclick="triggerAction(this)" ><i class="fa fa-edit data-toggle=" tooltip"="" data-original-title="Edit"></i></a>'
+                        LeaveBuilder += '</div>'
+                        LeaveBuilder += '</td>'
+
+                        LeaveBuilder += '<td class="text-center">'
+                        LeaveBuilder += '<div class="d-flex">'
+                        LeaveBuilder += '<a href="#" class="action-btns1" data-toggle="tooltip" data-placement="top" title="Delete" data-id="' + val.Com_Id + '" data-type="D" onclick="triggerAction(this)" data-title="Edit"><i class="feather feather-trash-2 text-danger fa fa-trash-o clsIcon"></i></a>'
+                        LeaveBuilder += '</div>'
+                        LeaveBuilder += '</td>'
+
+                        LeaveBuilder += '</tr>'
+                    });
+
+                    LeaveBuilder += '</tbody>'
+                    LeaveBuilder += '</table>'
+
+                    $("#dvLeaveDetails").html(LeaveBuilder);
+                    $('#Leave-list').dataTable();
+                }
+                else {
+                    alert(data.Message);
+                }
+            },
+            error: function (ex) {
+                $.unblockUI();
+                showerralert("Unable to connect remote server", "", '');
+            }
+        });
+
+    }
+</script>

@@ -166,6 +166,8 @@ namespace Payroll.Models
             public string strEmergencyCOnt { get; set; }
             public string strWillingtoWork { get; set; }
             public string struserName { get; set; }
+            public string strStatus { get; set; }
+            public string strFlag { get; set; }
         }
         #endregion
 

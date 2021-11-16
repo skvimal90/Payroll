@@ -128,8 +128,7 @@ namespace Payroll.Models
             public static string P_INSERT_EMPLOYEE_DETAILS = "P_INSERT_EMPLOYEE_DETAILS";
             public static string P_MANAGE_EMPLOYEE_DETAILS = "P_MANAGE_EMPLOYEE_DETAILS";
             public static string P_INSERT_LEAVE_REQUEST = "P_INSERT_LEAVE_REQUEST";
-
-            
+            public static string P_FETCH_LEAVE_REPORT = "P_FETCH_LEAVE_REPORT";
         }
     }
 }

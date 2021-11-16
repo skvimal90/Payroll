@@ -11,6 +11,7 @@ using System.Net.Http;
 using System.Web.Http;
 using Newtonsoft.Json;
 using Payroll.Models;
+using System.Globalization;
 
 namespace Payroll.Controllers
 {
@@ -480,21 +481,34 @@ namespace Payroll.Controllers
             string strStoredProcedure = string.Empty;
             try
             {
-                string strProcedure = string.Empty;
                 Hashtable hsParam = new Hashtable();
-                hsParam.Add("PEL_EMP_ID", LeaveReq.strEmpID ?? "");
-                hsParam.Add("PEL_Company_Id", LeaveReq.strCommpanyID ?? "");
-                hsParam.Add("PEL_Payroll_Id", LeaveReq.strPayrollID ?? "");
-                hsParam.Add("PEL_Leave_Type", LeaveReq.strLeaveType);
-                hsParam.Add("PEL_Leave_From", LeaveReq.strLeaveFrom);
-                hsParam.Add("PEL_Leave_To", LeaveReq.strLeaveTO);
-                hsParam.Add("PEL_Leave_Days", LeaveReq.strLeaveDays);
-                hsParam.Add("PEL_Reason", LeaveReq.strReason ?? "");
-                hsParam.Add("PEL_Emergency_Contact_No", LeaveReq.strEmergencyCOnt ?? "");
-                hsParam.Add("PET_Willingtowork_Ondemand", LeaveReq.strWillingtoWork ?? "");
-                hsParam.Add("Username", LeaveReq.struserName);
+                if (LeaveReq.strFlag == "F")
+                {
+                    hsParam.Add("PEL_EMP_ID", LeaveReq.strEmpID ?? "");
+                    hsParam.Add("PEL_Company_Id", LeaveReq.strCommpanyID ?? "");
+                    hsParam.Add("PEL_Payroll_Id", LeaveReq.strPayrollID ?? "");
+                    hsParam.Add("FROMDATE", LeaveReq.strLeaveFrom ?? "");
+                    hsParam.Add("TODATE", LeaveReq.strLeaveTO ?? "");
+                    hsParam.Add("Leave_Status", LeaveReq.strStatus ?? "");
+                    strStoredProcedure = DBHandler.StoreProcedure.P_FETCH_LEAVE_REPORT;
+                }
+                else
+                {
+                    hsParam.Add("PEL_EMP_ID", LeaveReq.strEmpID ?? "");
+                    hsParam.Add("PEL_Company_Id", LeaveReq.strCommpanyID ?? "");
+                    hsParam.Add("PEL_Payroll_Id", LeaveReq.strPayrollID ?? "");
+                    hsParam.Add("PEL_Leave_Type", LeaveReq.strLeaveType ?? "");
+                    hsParam.Add("PEL_Leave_From", DateTime.ParseExact(LeaveReq.strLeaveFrom, "dd/MM/yyyy", CultureInfo.InvariantCulture));
+                    hsParam.Add("PEL_Leave_To", DateTime.ParseExact(LeaveReq.strLeaveTO, "dd/MM/yyyy", CultureInfo.InvariantCulture));
+                    hsParam.Add("PEL_Leave_Days", LeaveReq.strLeaveDays);
+                    hsParam.Add("PEL_Reason", LeaveReq.strReason ?? "");
+                    hsParam.Add("PEL_Emergency_Contact_No", LeaveReq.strEmergencyCOnt ?? "");
+                    hsParam.Add("PET_Willingtowork_Ondemand", LeaveReq.strWillingtoWork ?? "");
+                    hsParam.Add("Username", LeaveReq.struserName ?? "");
+                    strStoredProcedure = DBHandler.StoreProcedure.P_INSERT_LEAVE_REQUEST;
+                } 
                 
-                dsOutput = DBHandler.ExecProcedureReturnsDataset(DBHandler.StoreProcedure.P_INSERT_LEAVE_REQUEST, hsParam, ref strErrorMsg);
+                dsOutput = DBHandler.ExecProcedureReturnsDataset(strStoredProcedure, hsParam, ref strErrorMsg);
                 string str = JsonConvert.SerializeObject(dsOutput);
 
                 if (dsOutput != null && dsOutput.Tables.Count > 0 && dsOutput.Tables[0].Columns.Count > 0)
